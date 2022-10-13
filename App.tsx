@@ -1,10 +1,13 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import React from 'react'
+import { StatusBar } from 'expo-status-bar'
+import { StyleSheet, TextInput, View } from 'react-native'
+import { TextEditor } from './components/TextEditor'
 
 export default function App() {
+  const [text, setText] = React.useState('Hello, world!');
   return (
     <View style={styles.container}>
-      <Text>Open up App.tsx to start working on your app!</Text>
+      <TextEditor style={styles.textBox} />
       <StatusBar style="auto" />
     </View>
   );
@@ -16,5 +19,10 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     alignItems: 'center',
     justifyContent: 'center',
+    margin: 100,
   },
+  textBox: {
+    flex: 1,
+    width: '80%',
+  }
 });
