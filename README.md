@@ -13,7 +13,7 @@ A powerful, simple, and user-friendly app with a WYSIWYG editor for Markdown.
 * Javascript
 * React 
 
-### INSTRUCTION
+### INSTRUCTIONS
 
 ### FEATURES
 
