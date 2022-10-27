@@ -67,6 +67,7 @@ const TextBlock = React.forwardRef(({text, setText, onFocus, line, active=false,
     <Text style={{color: active ? '#000' : '#aaa', flex: 0.05, fontFamily: 'monospace', fontSize: 16}}>{line}</Text>
     <TextInput
       ref={ref}
+      onFocus={onFocus}
       style={{outline: 'none', flex: 1}}
       value={text}
       onChangeText={setText}
