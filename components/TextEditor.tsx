@@ -63,8 +63,16 @@ export function TextEditor({style}) {
 
 const TextBlock = React.forwardRef(({text, setText, onFocus, line, active=false, onKeyPress, ...props}, ref: any) => {
   const [selection, setSelection] = React.useState({start: 0, end: 0})
-  return <View style={{flexDirection: 'row', backgroundColor: active ? '#f0f0f0' : '#f5f5f5'}}>
-    <Text style={{color: active ? '#000' : '#aaa', flex: 0.05, fontFamily: 'monospace', fontSize: 16}}>{line}</Text>
+  return <View style={{flexDirection: 'row', backgroundColor: active ? '#f0f0f0' : '#ffffff'}}>
+    <Text style={{
+      color: active ? '#000' : '#aaa',
+      flex: 0.05,
+      fontFamily: 'monospace',
+      fontSize: 16,
+      paddingLeft: 16,
+    }}>
+      {line}
+    </Text>
     <TextInput
       ref={ref}
       onFocus={onFocus}
