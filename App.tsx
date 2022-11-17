@@ -2,17 +2,40 @@ import React from 'react'
 import { StatusBar } from 'expo-status-bar'
 import { StyleSheet, TextInput, View } from 'react-native'
 import { TextEditor } from './components/TextEditor'
+import { Stickies } from './components/Stickies'
 import { Sidebar } from './components/Sidebar';
 
 export default function App() {
-  const [text, setText] = React.useState('Hello, world!');
+  const [activeNote, setNote] = React.useState('stickies');
   return (
     <View style={styles.container}>
-      <Sidebar/>
-      <TextEditor style={styles.textBox} />
+      <Sidebar activeNote={activeNote} setNote={setNote} />
+      <NoteView name={activeNote} />
       <StatusBar style="auto" />
     </View>
   );
+}
+
+// Placeholder
+function NoteView({name}) {
+  switch (name) {
+    case 'note1':
+      return <View>
+
+      </View>
+    case 'sidebyside':
+      return <View style={styles.container}>
+        <TextEditor style={styles.textBox} />
+        <TextEditor style={styles.textBox} />
+      </View>
+    case 'stickies':
+      return <Stickies/>
+    case 'stickies2':
+      return <Stickies freeform/>
+    default:
+      return <TextEditor style={styles.textBox} />
+    
+  }
 }
 
 const styles = StyleSheet.create({

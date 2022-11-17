@@ -29,6 +29,13 @@ export function TextEditor({style}) {
 
   return (
     <View style={style}>
+      <View style={{marginBottom: 12}}>
+        <Text style={{color: '#ddd', fontSize: 20}}>Title</Text>
+      </View>
+      
+      {blocks.length == 0
+        && <Text style={{color: '#ddd'}}>Note</Text>}
+        
       {blocks.map((block, i) => (
         <TextBlock
           key={`block-${i}`}
