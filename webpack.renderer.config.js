@@ -1,5 +1,6 @@
 const rules = require('./webpack.rules')
 const path = require('path')
+const ReactRefreshWebpackPlugin = require('@pmmmwh/react-refresh-webpack-plugin')
 
 rules.push(
   {
@@ -8,12 +9,15 @@ rules.push(
   },
   {
     test: /\.m?js$/,
-    exclude: /(node_modules|bower_components)/,
+    exclude: [/(node_modules|bower_components)/],
     use: {
       loader: 'babel-loader',
       options: {
         presets: ['@babel/preset-react'],
-        plugins: ['transform-react-pug']
+        plugins: [
+          'transform-react-pug',
+          ['react-refresh/babel', {skipEnvCheck: true}]
+        ]
       }
     }
   },
@@ -45,4 +49,10 @@ module.exports = {
   module: {
     rules,
   },
+  plugins: [
+    new ReactRefreshWebpackPlugin(),
+  ],
+
+  // transform-react-pug can cause broken source maps
+  devtool: false
 }

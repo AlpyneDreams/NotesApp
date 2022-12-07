@@ -33,10 +33,19 @@ module.exports = {
               name: 'main_window',
               preload: {
                 js: './src/preload.js',
+                
+                // Don't try to hot reload the preload script
+                config: {}
               },
             },
           ],
         },
+
+        // Settings needed for React hot reloading
+        devServer: {
+          hot: true,
+          liveReload: false
+        }
       },
     },
   ],

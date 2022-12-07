@@ -26,6 +26,7 @@
     "@electron-forge/maker-squirrel": "^6.0.4",
     "@electron-forge/maker-zip": "^6.0.4",
     "@electron-forge/plugin-webpack": "^6.0.4",
+    "@pmmmwh/react-refresh-webpack-plugin": "^0.5.10",
     "@vercel/webpack-asset-relocator-loader": "1.7.3",
     "babel-loader": "^9.1.0",
     "babel-plugin-transform-react-pug": "^7.0.1",
@@ -35,7 +36,8 @@
     "file-loader": "^6.2.0",
     "node-loader": "^2.0.0",
     "pug": "^3.0.2",
-    "pug-loader": "^2.4.0"
+    "pug-loader": "^2.4.0",
+    "react-refresh": "^0.14.0"
   },
   "dependencies": {
     "electron-squirrel-startup": "^1.0.0",
