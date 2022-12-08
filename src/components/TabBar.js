@@ -6,7 +6,7 @@ function getSplice(arr, ...args) {
   return arr
 }
 
-function TabBar() {
+export default function TabBar() {
 
   const [tabs, setTabs] = React.useState([])
   const [active, setActive] = React.useState(0)
@@ -14,7 +14,7 @@ function TabBar() {
   React.useEffect(() => {
     setTabs([
       {name: 'Tab'},
-      {name: 'Tab active'},
+      {name: 'Tab'},
       {name: 'Tab'},
     ])
   }, [])
@@ -27,7 +27,8 @@ function TabBar() {
   function closeTab(i) {
     setTabs(getSplice(tabs, i, 1))
     if (active >= i)
-      setActive(active - 1)
+      if (active == tabs.length - 1)
+        setActive(active - 1)
   }
 
   const Tab = ({name, i}) => pug`
@@ -47,5 +48,3 @@ function TabBar() {
         span.icon.icon-plus
   `
 }
-
-export default TabBar
