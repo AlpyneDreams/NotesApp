@@ -4,18 +4,31 @@ import Toolbar from '../components/Toolbar'
 import TabBar from '../components/TabBar'
 
 const App = () => pug`
-  Toolbar
-  TabBar
-  .window-content
-    .pane-group
+  .window-content.col
+    Toolbar
+    TabBar
+    .row.fill
       NavRail
       Sidebar
-      Main
+      .pane.col.fill
+        Main
+
 `
 
 export default App
 
 const NavRail = () => pug`
+  .pane.pane-mini.sidebar
+    nav.nav-group
+      a.nav-group-item.active: span.icon.icon-book(style={color: '#fc605b'})
+      a.nav-group-item: span.icon.icon-book(style={color: '#fdbc40'})
+      a.nav-group-item: span.icon.icon-book(style={color: '#34c84a'})
+      a.nav-group-item: span.icon.icon-book(style={color: '#57acf5'})
+    
+`
+
+
+const Sidebar = () => pug`
   .pane.pane-sm.sidebar
     nav.nav-group
       h5.nav-group-title Favorites
@@ -67,7 +80,7 @@ const NavRail = () => pug`
         |                 Backup disk
 `
 
-const Sidebar = () => pug`
+const Sidebar1 = () => pug`
   .pane.pane-sm.sidebar
     ul.list-group
       li.list-group-header
@@ -84,6 +97,15 @@ const Sidebar = () => pug`
           p Lorem ipsum dolor sit amet.
 `
 
+function Main() {
+
+  return pug`
+    .selectable-text.padded(contentEditable="true" suppressContentEditableWarning style={flex: 1, outline: 'none'}).
+      The quick brown fox jumps over the lazy dog.
+  `
+}
+
+/*
 const Main = () => pug`
   .pane
     table.table-striped
@@ -195,4 +217,4 @@ const Main = () => pug`
       button.btn.btn-negative Negative
       | 
       button.btn.btn-warning Warning
-`
+`*/
