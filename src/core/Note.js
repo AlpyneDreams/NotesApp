@@ -57,6 +57,7 @@ export class Notebook {
   title = ''
   color = null
   notes = []
+  noteIdx = 0
 
   constructor(props={}) {
     Object.assign(this, props)

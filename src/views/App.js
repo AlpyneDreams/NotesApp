@@ -34,7 +34,7 @@ function App() {
   const [notebookIdx, setNotebook] = React.useState(0)
   const notebook = notebooks[notebookIdx]
 
-  const [noteIdx, setNote] = React.useState(0)
+  const [noteIdx, setNote] = React.useState(notebook.noteIdx)
   const note = notebook.notes[noteIdx]
   const [contentUpdated, setContentUpdated] = React.useState(0)
   const updateNote = (props) => {
@@ -42,7 +42,7 @@ function App() {
     forceUpdate()
   }
 
-  const loaded = note.content != null
+  const loaded = note.loaded
   React.useEffect(() => {
     if (!loaded) {
       console.log('Loading note content...')
@@ -53,10 +53,9 @@ function App() {
   }, [notebookIdx, noteIdx])
 
   const switchNotebook = (i) => {
+    notebooks[notebookIdx].noteIdx = noteIdx
     setNotebook(i)
-    if (noteIdx <= notebooks[i].notes.length) {
-      setNote(0)
-    }
+    setNote(notebooks[i].noteIdx)
   }
 
   return pug`
