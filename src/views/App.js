@@ -1,5 +1,4 @@
 import React, { Children } from 'react'
-import placeholder from '../assets/placeholder.png'
 import Toolbar from '../components/Toolbar'
 import TabBar from '../components/TabBar'
 import NavRail from '../components/NavRail'
@@ -73,8 +72,6 @@ function App() {
 export default App
 
 function Sidebar({notes=[], active, switchNote=() => {}}) {
-  //const [active, setActive] = React.useState(active)
-
   return pug`
     .pane.pane-sm.sidebar
       nav.list-group(style={overflow: 'auto'})
