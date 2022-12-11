@@ -1,5 +1,6 @@
 @import 'dist/photon/css/photon.scss';
 @import 'bootstrap.scss';
+@import 'dist/github-markdown.css';
 
 html {
   box-sizing: border-box;
@@ -11,8 +12,15 @@ html {
   box-sizing: inherit;
 }
 
+body, .markdown-body {
+  font-family: system, -apple-system, ".SFNSDisplay-Regular", "Helvetica Neue", Inter, Cantarell, Helvetica, "Segoe UI", sans-serif;
+}
+
+.markdown-body {
+  font-size: 11pt;
+}
+
 body {
-  //font-family: system, -apple-system, ".SFNSDisplay-Regular", "Helvetica Neue", Inter, Cantarell, Helvetica, "Segoe UI", sans-serif;
   font-size: 14px;
   background-color: transparent;
 }
