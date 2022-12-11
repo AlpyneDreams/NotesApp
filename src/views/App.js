@@ -7,10 +7,7 @@ import Reorder from 'react-reorder'
 import { Note, Notebook } from '../core/Note'
 import { useForceUpdate } from '../util'
 
-const notebookPaths = [
-  './test/Notebook',
-  './test/Notable',
-]
+const notebookPaths = fs.readdirSync('notes').map(path => Path.join('notes', path))
 
 const notebooks = notebookPaths.map(path => Notebook.fromFile(path))
 /*
