@@ -105,7 +105,7 @@ function Editor({note, updateNote}) {
       )
       HTML.markdown-body.selectable-text.fill(
         live=true
-        spellcheck=false
+        spellCheck=false
         deps=[note.path, note.loaded]
         contentEditable="true"
         suppressContentEditableWarning
