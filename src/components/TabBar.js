@@ -6,18 +6,15 @@ function getSplice(arr, ...args) {
   return arr
 }
 
-export default function TabBar() {
-
-  const [tabs, setTabs] = React.useState([])
-  const [active, setActive] = React.useState(0)
-
-  React.useEffect(() => {
-    setTabs([
-      {name: 'Tab'},
-      {name: 'Tab'},
-      {name: 'Tab'},
-    ])
-  }, [])
+export default function Tabs({
+  tabs: tabList = [{name: 'Tab'}, {name: 'Tab'}, {name: 'Tab'}],
+  activeTab = 0,
+  Tab=BarTab,
+  Root=BarRoot,
+  New=BarNew
+}) {
+  const [tabs, setTabs] = React.useState(tabList)
+  const [active, setActive] = React.useState(activeTab)
 
   function newTab() {
     setTabs([...tabs, {name: 'Tab'}])
@@ -31,20 +28,37 @@ export default function TabBar() {
         setActive(active - 1)
   }
 
-  const Tab = ({name, i}) => pug`
-    .tab-item(
-      className=(i == active) ? 'active' : ''
-      onClick=() => setActive(i)
-    )
-      if tabs.length > 1
-        span.icon.icon-cancel.icon-close-tab(onClick=e => {e.stopPropagation(); closeTab(i)})
-      = name
-  `
-
   return pug`
-    .tab-group
-      ${tabs.map((tab, i) => <Tab key={i} i={i} {...tab} />)}
-      .tab-item.tab-item-fixed(onClick=newTab)
-        span.icon.icon-plus
+    Root
+      ${tabs.map((tab, i) => 
+        <Tab
+          key={i}
+          active={i === active}
+          focus={() => setActive(i)}
+          close={tabs.length > 1 && (e => {e.stopPropagation(); closeTab(i)})}
+          {...tab}
+        />
+      )}
+      New(onClick=newTab)
   `
 }
+
+const BarTab = ({active, focus, close, name}) => pug`
+  .tab-item(
+    className=active ? 'active' : ''
+    onClick=focus
+  )
+    if close
+      span.icon.icon-cancel.icon-close-tab(onClick=close)
+    = name
+`
+
+const BarRoot = ({children}) => pug`
+  .tab-group
+    = children
+`
+
+const BarNew = ({onClick}) => pug`
+  .tab-item.tab-item-fixed(onClick=onClick)
+    span.icon.icon-plus
+`

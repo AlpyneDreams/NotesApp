@@ -2,31 +2,23 @@ import React from 'react'
 import placeholder from '../assets/placeholder.png'
 import Toolbar from '../components/Toolbar'
 import TabBar from '../components/TabBar'
+import NavRail from '../components/NavRail'
 
-const App = () => pug`
-  .window-content.col
-    Toolbar
-    TabBar
-    .row.fill
-      NavRail
-      Sidebar
-      .pane.col.fill
-        Main
-
-`
+function App()
+{
+  return pug`
+    .window-content.col
+      Toolbar
+      TabBar
+      .row.fill
+        NavRail
+        Sidebar
+        .pane.col.fill
+          Main
+  `
+}
 
 export default App
-
-const NavRail = () => pug`
-  .pane.pane-mini.sidebar
-    nav.nav-group
-      a.nav-group-item.active: span.icon.icon-book(style={color: '#fc605b'})
-      a.nav-group-item: span.icon.icon-book(style={color: '#fdbc40'})
-      a.nav-group-item: span.icon.icon-book(style={color: '#34c84a'})
-      a.nav-group-item: span.icon.icon-book(style={color: '#57acf5'})
-    
-`
-
 
 const Sidebar = () => pug`
   .pane.pane-sm.sidebar
