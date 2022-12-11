@@ -1,10 +1,19 @@
 import React from 'react'
 import WindowControls from './WindowControls'
+import bootstrap from '../dist/bootstrap/js/bootstrap.bundle.min.js'
 
 function EditBar() {
-  function FormatButton({ icon, command, param=null }) {
+  function FormatButton({title, icon, command, param=null }) {
+    const ref = React.useRef()
+    
+    if (title)
+      React.useLayoutEffect(() => {
+        console.log(ref.current)
+        new bootstrap.Tooltip(ref.current, {placement: 'bottom'})
+      })
+
     return pug`
-      button.btn.btn-default(onClick=() => document.execCommand(command, false, param))
+      button.btn.btn-default(title=title ref=ref onClick=() => document.execCommand(command, false, param))
         i.bi(className='bi-' + icon style={fontSize: 16})
     `
   }
