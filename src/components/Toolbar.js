@@ -21,6 +21,10 @@ function EditBar() {
         FormatButton(icon='code' command='fontName' param='monospace')
         FormatButton(icon='type-underline' command='underline')
         FormatButton(icon='type-strikethrough' command='strikeThrough')
+      //.btn-group
+        FormatButton(icon='type-h1' command='formatBlock' param='h1')
+        FormatButton(icon='type-h2' command='formatBlock' param='h2')
+        FormatButton(icon='type-h3' command='formatBlock' param='h3')
       button.btn.btn-default(style={marginLeft: 'auto'})
         i.icon.icon-search
   `
