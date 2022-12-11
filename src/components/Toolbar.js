@@ -25,8 +25,14 @@ function EditBar() {
         FormatButton(icon='type-h1' command='formatBlock' param='h1')
         FormatButton(icon='type-h2' command='formatBlock' param='h2')
         FormatButton(icon='type-h3' command='formatBlock' param='h3')
-      button.btn.btn-default(style={marginLeft: 'auto'})
-        i.icon.icon-search
+      .dropdown.ms-auto.me-1
+        a.btn.btn-default(data-bs-toggle='dropdown')
+          i.icon.icon-search
+        div.dropdown-menu.dropdown-menu-end.p-2(style={minWidth: 300})
+          .dropdown-arrow
+          .input-group
+            input.fill.form-control.form-control-sm(type='text' placeholder='Search')
+            button.btn.btn-default(style={height: 'unset'}) Search
   `
 }
 
@@ -37,8 +43,14 @@ const Toolbar = () => pug`
       .pane-mini.row
         WindowControls
         .toolbar-actions(style={paddingTop: 4, paddingBottom: 4})
-          button.btn.btn-default.btn-dropdown
-            i.icon.icon-cog
+          .dropdown
+            button.btn.btn-default.btn-dropdown(data-bs-toggle='dropdown')
+              i.icon.icon-cog
+            ul.dropdown-menu
+              .dropdown-arrow
+              li: a.dropdown-item(href='#') Switch to Dark Theme
+              li: hr.dropdown-divider
+              li: a.dropdown-item(href='#') Quit
       .pane-sm.fill(style={pointerEvents: 'none'})
       EditBar
       //.toolbar-actions.fill

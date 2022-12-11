@@ -1,0 +1,115 @@
+// This code written by me for a past personal project -Jeff
+
+$dropdown-arrow-offset: 0.65rem;
+$dropdown-arrow-height: 8px;
+
+$_dd-arrow-vert-offset: -($dropdown-arrow-height * 2);
+
+// $side is opposite the direction the arrow points
+@mixin dropdown-arrow($side) {
+    & > .dropdown-arrow {
+        border-color: transparent;
+        border-#{$side}-color: var(--dropdown-arrow-border-color);
+        &::before {
+            #{$side}: -$dropdown-arrow-height - 1px;
+            border-color: transparent;
+            border-#{$side}-color: var(--dropdown-arrow-bg);
+        }
+        #{$side}: unset;
+    }
+}
+
+.dropdown-menu > .dropdown-arrow {
+    position: absolute;
+    display: block;
+    width: 0; height: 0;
+    border: $dropdown-arrow-height solid;
+
+    --dropdown-arrow-bg: #{$dropdown-bg};
+    --dropdown-arrow-border-color: #{$dropdown-border-color};
+
+    &::before {
+        position: absolute;
+        content: "";
+        border: $dropdown-arrow-height solid;
+        
+        left: -($dropdown-arrow-height);
+        bottom: -$dropdown-arrow-height;
+    }
+
+    // default: top, aligned left
+    left: $dropdown-arrow-offset;
+    top: $_dd-arrow-vert-offset;
+
+    pointer-events: none;
+}
+
+.dropdown-menu-dark > .dropdown-arrow {
+    --dropdown-arrow-bg: #{$dropdown-dark-bg};
+    --dropdown-arrow-border-color: #{$dropdown-dark-border-color};
+}
+
+.dropdown .dropdown-menu {
+    @include dropdown-arrow(bottom);
+}
+
+.dropdown-menu-end > .dropdown-arrow {
+    // align right
+    left: unset;
+    right: $dropdown-arrow-offset;
+}
+
+.dropup .dropdown-menu {
+    @include dropdown-arrow(top);
+
+    // move to bottom
+    & > .dropdown-arrow {
+        bottom: $_dd-arrow-vert-offset;
+    }
+}
+
+.dropend .dropdown-menu {
+    @include dropdown-arrow(right);
+
+    // move to left side
+    & > .dropdown-arrow {
+        top: $dropdown-arrow-offset;
+        left: $_dd-arrow-vert-offset;
+    }
+}
+
+.dropstart .dropdown-menu {
+    @include dropdown-arrow(left);
+
+    // move to right side
+    & > .dropdown-arrow {
+        top: $dropdown-arrow-offset;
+        right: $_dd-arrow-vert-offset;
+    }
+}
+
+// handling for when navbar is collapsed by .navbar-expand-X
+.navbar-expand {
+    @each $breakpoint in map-keys($grid-breakpoints) {
+        $next: breakpoint-next($breakpoint, $grid-breakpoints);
+        $infix: breakpoint-infix($next, $grid-breakpoints);
+
+        @if $infix != '' {
+            &#{$infix} {
+                @include media-breakpoint-down($next) {
+                    .navbar-nav .dropdown-menu:not(.position-absolute) {
+                        // just hide the arrow
+                        .dropdown-arrow { display: none; }
+
+                        // act like position-static but allow dropdown-arrow to work
+                        //position: relative; top: initial; left: initial; right: initial; bottom: initial;
+                        
+                        // always position in the default location
+                        //@include dropdown-arrow(bottom);
+                        //.dropdown-arrow { left: $dropdown-arrow-offset; top: $_dd-arrow-vert-offset; }
+                    }
+                }
+            }
+        }
+    }
+}
