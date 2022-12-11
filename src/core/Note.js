@@ -45,7 +45,7 @@ export class Note {
       dom.removeChild(h1)
     }
     this.content = dom.innerHTML
-    this.loaded = true
+    this.loaded = true    
   }
 
   static fromFile(path) {

@@ -36,7 +36,6 @@ function App() {
 
   const [noteIdx, setNote] = React.useState(notebook.noteIdx)
   const note = notebook.notes[noteIdx]
-  const [contentUpdated, setContentUpdated] = React.useState(0)
   const updateNote = (props) => {
     notebook.notes[noteIdx] = {...note, ...props}
     forceUpdate()
@@ -48,7 +47,6 @@ function App() {
       console.log('Loading note content...')
       note.load()
       updateNote({content: note.content})
-      setContentUpdated(contentUpdated + 1)
     }
   }, [notebookIdx, noteIdx])
 
@@ -67,7 +65,7 @@ function App() {
         Sidebar(notes=notebook.notes active=noteIdx switchNote=setNote)
         .pane.col.fill
           if loaded
-            Editor(note=note version={contentUpdated} updateNote=updateNote)
+            Editor(note=note updateNote=updateNote)
           else
             .d-flex.justify-content-center
               .spinner-border.text-primary(style={margin: 20})
@@ -94,7 +92,7 @@ function Sidebar({notes=[], active, switchNote=() => {}}) {
   `
 }
 
-function Editor({note, updateNote, version}) {
+function Editor({note, updateNote}) {
   if (!note)
     return null
   return pug`
