@@ -1,10 +1,11 @@
 import React, { Children } from 'react'
 import Toolbar from '../components/Toolbar'
 import TabBar from '../components/TabBar'
-import NavRail from '../components/NavRail'
+import {NavRail, Sidebar} from '../components/Sidebar'
 import Reorder from 'react-reorder'
 import { Note, Notebook } from '../core/Note'
 import { useForceUpdate } from '../util'
+import HTML from '../components/HTML'
 
 const notebookPaths = fs.readdirSync('notes').map(path => Path.join('notes', path))
 
@@ -52,13 +53,19 @@ function App() {
     setNote(notebooks[i].noteIdx)
   }
 
+  function addNote() {
+    const note = new Note()
+    notebook.notes.push(note)
+    setNote(notebook.notes.length - 1)
+  }
+
   return pug`
     .window-content.col
       Toolbar
       TabBar
       .row.fill(style={overflow: 'hidden'})
         NavRail(notebooks=notebooks switchNotebook=switchNotebook)
-        Sidebar(notes=notebook.notes active=noteIdx switchNote=setNote)
+        Sidebar(notes=notebook.notes active=noteIdx addNote=addNote switchNote=setNote)
         .pane.col.fill
           if loaded
             Editor(note=note updateNote=updateNote)
@@ -70,21 +77,6 @@ function App() {
 }
 
 export default App
-
-function Sidebar({notes=[], active, switchNote=() => {}}) {
-  return pug`
-    .pane.pane-sm.sidebar
-      nav.list-group(style={overflow: 'auto'})
-        h5.nav-group-title Notes
-        each note, i in notes
-          li.list-group-item(key=i className=(active === i && 'active') onClick=() => switchNote(i))
-            //img.img-circle.media-object.pull-left(src=placeholder width='32' height='32')
-            .media-body
-              h6= note.title
-              p(style={maxHeight: '1.5em'})
-                HTML= note.content
-  `
-}
 
 function Editor({note, updateNote}) {
   if (!note)
@@ -110,17 +102,5 @@ function Editor({note, updateNote}) {
         }
       )
         = note.content
-  `
-}
-
-function HTML({children, live = false, deps=[], ...props}) {
-  const ref = React.useRef()
-
-  React.useEffect(() => {
-    ref.current.innerHTML = children
-  }, deps.concat(live ? [] : [children]))
-
-  return pug`
-    span(ref=ref ...props)
   `
 }

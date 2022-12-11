@@ -52,7 +52,7 @@ body {
 
 /* Photon Components */
 
-.btn {
+.btn:not(.btn-large):not(.btn-mini) {
   height: 24px;
 }
 
@@ -83,11 +83,36 @@ body {
   min-height: 26px;
 }
 
+.list-group-item.active .text-muted {
+  color: white !important;
+}
+
 /* Bootstrap Components */
 
-.dropdown-item {
+.dropdown-menu {
   font-size: 10pt;
+}
+
+.dropdown-item {
   padding: 2px 48px 2px 10px;
+}
+
+.bttn-light, .bttn-white {
+  &:hover {
+      background-color: shift-color($light, 5%) !important;
+  }
+  &:active {
+      background-color: shift-color($light, 10%) !important;
+  }
+}
+
+.bttn-white {
+  @include button-variant($white, $border-color);
+  background-image: none;
+
+  &:hover {
+      border-color: shade-color($border-color, 5%);
+  }
 }
 
 /* Utilities */

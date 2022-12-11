@@ -4,11 +4,17 @@
 $enable-shadows: true;
 $headings-line-height: 1.3;
 
+// these are pretty subtle
+$enable-gradients: true;
+
 // scss-docs-start import-stack
 // Configuration
 @import "dist/bootstrap/scss/functions";
 @import "dist/bootstrap/scss/variables";
 @import "dist/bootstrap/scss/variables-dark";
+
+$text-muted: #888;
+
 @import "dist/bootstrap/scss/maps";
 @import "dist/bootstrap/scss/mixins";
 @import "dist/bootstrap/scss/utilities";
@@ -19,7 +25,11 @@ $headings-line-height: 1.3;
 @import "dist/bootstrap/scss/type";
 //@import "dist/bootstrap/scss/images";
 //@import "dist/bootstrap/scss/containers";
-//@import "dist/bootstrap/scss/grid";
+
+.bs-grid {
+    @import "dist/bootstrap/scss/grid";
+}
+
 //@import "dist/bootstrap/scss/tables";
 @import "dist/bootstrap/scss/forms";
 @import "dist/bootstrap/scss/buttons-alt";

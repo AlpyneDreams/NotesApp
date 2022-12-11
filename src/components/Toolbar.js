@@ -40,7 +40,7 @@ function EditBar() {
 const Toolbar = () => pug`
   header.toolbar.toolbar-header.draggable.col
     .row
-      .pane-mini.row
+      .pane-mini.row(style={width: 150})
         WindowControls
         .toolbar-actions(style={paddingTop: 4, paddingBottom: 4})
           .dropdown
