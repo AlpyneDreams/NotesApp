@@ -22,7 +22,7 @@ export function NavRail({notebooks=[], switchNotebook=(i) => {}}) {
             .col-8: input.form-control.form-control-sm(type='text' placeholder='Notebook')
           .row.justify-content-between
             label.col.col-form-label.me-4 Color
-            .col-8: input.form-control.form-control-sm(type='color' value='#737475' style={maxWidth: 80})
+            .col-8: input.form-control.form-control-sm(type='color' value='#737475' onChange=()=>{} style={maxWidth: 80})
           .d-flex
             button.btn.w-100.btn-primary.mt-3 Create Notebook
     `
@@ -40,7 +40,7 @@ export function NavRail({notebooks=[], switchNotebook=(i) => {}}) {
           = children
     `}
     Tab={({active, index, focus, close, ...notebook}) => pug`
-      a.nav-group-item(className=(active && 'active') onClick=() => {
+      a.nav-group-item.w-100(className=(active && 'active') onClick=() => {
         switchNotebook(index)
         focus()
       })

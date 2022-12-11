@@ -31,12 +31,13 @@ export default function Tabs({
         setActive(active - 1)
   }
 
+  const newButton = <New key='new-tab' onClick={newTab} />
+
   function onReorder(event, previousIndex, nextIndex, fromId, toId) {
-    if (previousIndex === tabs.length)
+    if (newButton != null && previousIndex === tabs.length)
       return
     setTabs(reorder(tabs, previousIndex, nextIndex))
   }
-  
 
   return pug`
     Reorder(
@@ -59,23 +60,9 @@ export default function Tabs({
               ...tab
             )
         else
-          New(key='new-tab' onClick=newTab)    
+          = newButton
   `
 
-  return pug`
-    Root
-      ${tabs.map((tab, i) => 
-        <Tab
-          key={i}
-          index={i}
-          active={i === active}
-          focus={() => setActive(i)}
-          close={tabs.length > 1 && (e => {e.stopPropagation(); closeTab(i)})}
-          {...tab}
-        />
-      )}
-      New(onClick=newTab)
-  `
 }
 
 const BarTab = ({active, focus, close, name}) => pug`
