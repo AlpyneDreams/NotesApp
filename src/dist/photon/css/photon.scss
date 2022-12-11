@@ -122,7 +122,7 @@ th {
 }
 
 * {
-  cursor: default;
+  //cursor: default;
   -webkit-user-select: none;
 }
 
@@ -603,6 +603,7 @@ input[type="checkbox"] {
   line-height: normal;
 }
 
+/*
 .form-control {
   display: inline-block;
   width: 100%;
@@ -657,6 +658,7 @@ textarea {
 .form-actions .btn:last-child {
   margin-right: 0;
 }
+*/
 
 .pane-group {
   position: absolute;

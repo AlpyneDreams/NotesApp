@@ -42,6 +42,26 @@ rules.push(
     ],
     type: 'asset/resource'
   },
+  {
+    test: /\.s[ac]ss$/,
+    use: [
+      'extract-loader',
+      {
+        loader: "css-loader",
+        options: {
+          esModule: false,
+        }
+      },
+      'resolve-url-loader',
+      {
+        loader: 'sass-loader',
+        options: {
+          sourceMap: true
+        }
+      }
+    ],
+    type: 'asset/resource'
+  },
 )
 
 module.exports = {

@@ -1,0 +1,107 @@
+@import 'dist/photon/css/photon.scss';
+@import 'bootstrap.scss';
+
+html {
+  box-sizing: border-box;
+}
+
+*,
+*:before,
+*:after {
+  box-sizing: inherit;
+}
+
+body {
+  //font-family: system, -apple-system, ".SFNSDisplay-Regular", "Helvetica Neue", Inter, Cantarell, Helvetica, "Segoe UI", sans-serif;
+  font-size: 14px;
+  background-color: transparent;
+}
+
+#root,
+.modal-backdrop.show {
+  margin: 10px !important;
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+#root {
+  box-shadow: 0 0 7.5px rgba(0, 0, 0, .2);
+  border: 1px solid #bebebe;
+  background-color: white;
+}
+
+.modal-backdrop.show {
+  position: fixed;
+  width: auto; height: auto;
+  left: 0; right: 0;
+  top: 0; bottom: 0;
+}
+
+
+/* Photon Components */
+
+.btn {
+  height: 24px;
+}
+
+.btn .icon {
+  float: none !important;
+  vertical-align: text-bottom;
+  pointer-events: none;
+}
+
+.btn .bi {
+  font-size: 14px;
+  line-height: 1;
+  color: #737475;
+  vertical-align: text-bottom;
+  pointer-events: none;
+}
+
+.btn-secondary,
+.btn-light {
+  @extend .btn-default !optional;
+}
+
+.icon:before {
+  line-height: unset !important;
+}
+
+.nav-group-item {
+  height: 26px;
+}
+
+/* Utilities */
+
+.row {
+  display: flex;
+  flex-direction: row;
+}
+
+.col {
+  display: flex;
+  flex-direction: column;
+}
+
+.row.reverse {
+  flex-direction: row-reverse;
+}
+
+.col.reverse {
+  flex-direction: column-reverse;
+}
+
+.fill {
+  flex: 1;
+}
+
+/* Custom */
+
+code {
+  background-color: #efefef;
+  line-height: 1em;
+}
+
+font[face=monospace] {
+  @extend code;
+}
