@@ -49,15 +49,14 @@ export default function Tabs({
     )
       each tab, i in [...tabs, null]
         if tab != null
-          .fill(key=i)
-            Tab(
-              key=i
-              index=i
-              active=(i === active)
-              focus=() => setActive(i)
-              close=tabs.length > 1 && (e => {e.stopPropagation(); closeTab(i)})
-              ...tab
-            )
+          Tab(
+            key=i
+            index=i
+            active=(i === active)
+            focus=() => setActive(i)
+            close=tabs.length > 1 && (e => {e.stopPropagation(); closeTab(i)})
+            ...tab
+          )
         else
           New(key='new-tab' onClick=newTab)    
   `
