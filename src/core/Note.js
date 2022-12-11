@@ -24,21 +24,21 @@ function parseHtml(html) {
 export class Note {
   title = ''
   content = null
-  mdContent = null
   path = ''
   loaded = true
 
   constructor(props={}) {
     Object.assign(this, props)
+
     if (!this.path)
       this.path = this.title
   }
 
-  async parseContent() {
-    const html = md.render(this.mdContent)
+  async load() {
+    const body = fs.readFileSync(this.path, 'utf-8')
+    const html = md.render(body)
     const dom = parseHtml(html)
 
-    
     const h1 = dom.querySelector('h1')
     if (h1) {
       this.title = h1.textContent
@@ -49,10 +49,7 @@ export class Note {
   }
 
   static fromFile(path) {
-    const body = fs.readFileSync(path, 'utf-8')
-    let title = Path.basename(path, '.md')
-
-    return new Note({title, mdContent: body, path, loaded: false})
+    return new Note({title: Path.basename(path, '.md'), path, loaded: false})
   }
 }
 

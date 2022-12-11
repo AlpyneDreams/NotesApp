@@ -9,7 +9,7 @@ import { useForceUpdate } from '../util'
 
 const notebookPaths = [
   './test/Notebook',
-  //'./test/Notable',
+  './test/Notable',
 ]
 
 const notebooks = notebookPaths.map(path => Notebook.fromFile(path))
@@ -46,7 +46,7 @@ function App() {
   React.useEffect(() => {
     if (!loaded) {
       console.log('Loading note content...')
-      note.parseContent()
+      note.load()
       updateNote({content: note.content})
       setContentUpdated(contentUpdated + 1)
     }
