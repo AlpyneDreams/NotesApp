@@ -12,14 +12,24 @@ function EditBar() {
   return pug`
     .toolbar-actions.row.fill(style={paddingTop: 4, paddingBottom: 4})
       .btn-group
-        FormatButton(icon='type-bold' command='bold')
-        FormatButton(icon='type-italic' command='italic')
-        FormatButton(icon='type-underline' command='underline')
-        FormatButton(icon='type-strikethrough' command='strikeThrough')
+        FormatButton(icon='type-bold' command='bold' title='Bold')
+        FormatButton(icon='type-italic' command='italic' title='Italic')
+        FormatButton(icon='type-underline' command='underline' title='Underline')
+        FormatButton(icon='type-strikethrough' command='strikeThrough' title='Strikethrough')
       .btn-group
-        FormatButton(icon='link' command='createLink')
-        FormatButton(icon='code' command='fontName' param='monospace')
-        //FormatButton(icon='type-underline' command='underline')
+        FormatButton(icon='link' command='createLink' title='Insert Link')
+        FormatButton(icon='code' command='fontName' param='monospace' title='Code')
+        //- TODO: Need "remove formatting" icon
+        //- Perhaps this should formatBlock(p) if nothing is selected
+        FormatButton(icon='type' command='removeFormat' title='Clear Formatting')
+      .btn-group
+        FormatButton(icon='justify-left' command='formatBlock' param='p' title='Clear Block Formatting')
+        FormatButton(icon='braces' command='formatBlock' param='pre' title='Code Block')
+        FormatButton(icon='quote' command='formatBlock' param='blockquote' title='Blockquote')
+        FormatButton(icon='list-ul' command='insertUnorderedList' title='Unordered List')
+        FormatButton(icon='list-ol' command='insertUnorderedList' title='Ordered List')
+        //- TODO: Todo lists
+        FormatButton(icon='check2-square' command='insertUnorderedList' title='Checkboxes')
         //FormatButton(icon='type-strikethrough' command='strikeThrough')
       //.btn-group
         FormatButton(icon='type-h1' command='formatBlock' param='h1')
