@@ -25,7 +25,8 @@ const createWindow = () => {
     center: true,
     webPreferences: {
       preload: MAIN_WINDOW_PRELOAD_WEBPACK_ENTRY,
-    },
+      nodeIntegration: true,
+    }
   })
 
   // TEMP: While there's no dark mode

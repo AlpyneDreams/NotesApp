@@ -1,212 +1,135 @@
-import React from 'react'
+import React, { Children } from 'react'
 import placeholder from '../assets/placeholder.png'
 import Toolbar from '../components/Toolbar'
 import TabBar from '../components/TabBar'
 import NavRail from '../components/NavRail'
+import Reorder from 'react-reorder'
+import { Note, Notebook } from '../core/Note'
+import { useForceUpdate } from '../util'
 
-function App()
-{
+const notebookPaths = [
+  './test/Notebook',
+  //'./test/Notable',
+]
+
+const notebooks = notebookPaths.map(path => Notebook.fromFile(path))
+/*
+const notebooks = [
+  new Notebook({title: 'Notebook 1', color: '#fc605b', notes: [
+    new Note({title: 'Hello', content: 'Content'}),
+    new Note({title: 'Hello 2', content: 'Content 2'})
+  ]}),
+  new Notebook({title: 'Notebook 2', color: '#fdbc40', notes: [
+    new Note({title: 'Hello 3', content: 'Content 3'})
+  ]}),
+  new Notebook({title: 'Notebook 3', color: '#34c84a'}),
+  new Notebook({title: 'Notebook 4', color: '#57acf5'}),
+]
+*/
+
+function App() {
+  
+  const forceUpdate = useForceUpdate()
+
+  const [notebookIdx, setNotebook] = React.useState(0)
+  const notebook = notebooks[notebookIdx]
+
+  const [noteIdx, setNote] = React.useState(0)
+  const note = notebook.notes[noteIdx]
+  const [contentUpdated, setContentUpdated] = React.useState(0)
+  const updateNote = (props) => {
+    notebook.notes[noteIdx] = {...note, ...props}
+    forceUpdate()
+  }
+
+  const loaded = note.content != null
+  React.useEffect(() => {
+    if (!loaded) {
+      console.log('Loading note content...')
+      note.parseContent()
+      updateNote({content: note.content})
+      setContentUpdated(contentUpdated + 1)
+    }
+  }, [notebookIdx, noteIdx])
+
+  const switchNotebook = (i) => {
+    setNotebook(i)
+    if (noteIdx <= notebooks[i].notes.length) {
+      setNote(0)
+    }
+  }
+
   return pug`
     .window-content.col
       Toolbar
       TabBar
-      .row.fill
-        NavRail
-        Sidebar
+      .row.fill(style={overflow: 'hidden'})
+        NavRail(notebooks=notebooks switchNotebook=switchNotebook)
+        Sidebar(notes=notebook.notes active=noteIdx switchNote=setNote)
         .pane.col.fill
-          Main
+          if loaded
+            Editor(note=note version={contentUpdated} updateNote=updateNote)
+          else
+            .d-flex.justify-content-center
+              .spinner-border.text-primary(style={margin: 20})
+
   `
 }
 
 export default App
 
-const Sidebar = () => pug`
-  .pane.pane-sm.sidebar
-    nav.nav-group
-      h5.nav-group-title Favorites
-      a.nav-group-item.active
-        span.icon.icon-home
-        |                 user
-      span.nav-group-item
-        span.icon.icon-download
-        |                 Downloads
-      span.nav-group-item
-        span.icon.icon-folder
-        |                 Documents
-      span.nav-group-item
-        span.icon.icon-signal
-        |                 AirPlay
-      span.nav-group-item
-        span.icon.icon-print
-        |                 Applications
-      span.nav-group-item
-        span.icon.icon-cloud
-        |                 Desktop
-    nav.nav-group
-      h5.nav-group-title Tags
-      span.nav-group-item(href='#')
-        span.icon.icon-record(style={color: '#fc605b'})
-        |                 Red
-      span.nav-group-item(href='#')
-        span.icon.icon-record(style={color: '#fdbc40'})
-        |                 Orange
-      span.nav-group-item(href='#')
-        span.icon.icon-record(style={color: '#34c84a'})
-        |                 Green
-      span.nav-group-item(href='#')
-        span.icon.icon-record(style={color: '#57acf5'})
-        |                 Blue
-    nav.nav-group
-      h5.nav-group-title Devices
-      span.nav-group-item
-        span.icon.icon-drive
-        |                 Backup disk
-      span.nav-group-item
-        span.icon.icon-drive
-        |                 Backup disk
-      span.nav-group-item
-        span.icon.icon-drive
-        |                 Backup disk
-      span.nav-group-item
-        span.icon.icon-drive
-        |                 Backup disk
-`
-
-const Sidebar1 = () => pug`
-  .pane.pane-sm.sidebar
-    ul.list-group
-      li.list-group-header
-        input.form-control(type='text' placeholder='Search for someone')
-      li.list-group-item.active
-        img.img-circle.media-object.pull-left(src=placeholder width='32' height='32')
-        .media-body
-          strong List item title
-          p Lorem ipsum dolor sit amet.
-      li.list-group-item
-        img.img-circle.media-object.pull-left(src=placeholder width='32' height='32')
-        .media-body
-          strong List item title
-          p Lorem ipsum dolor sit amet.
-`
-
-function Main() {
+function Sidebar({notes=[], active, switchNote=() => {}}) {
+  //const [active, setActive] = React.useState(active)
 
   return pug`
-    .selectable-text.padded(contentEditable="true" suppressContentEditableWarning style={flex: 1, outline: 'none'}).
-      The quick brown fox jumps over the lazy dog.
+    .pane.pane-sm.sidebar
+      nav.list-group(style={overflow: 'auto'})
+        h5.nav-group-title Notes
+        each note, i in notes
+          li.list-group-item(key=i className=(active === i && 'active') onClick=() => switchNote(i))
+            //img.img-circle.media-object.pull-left(src=placeholder width='32' height='32')
+            .media-body
+              h6= note.title
+              p(style={maxHeight: '1.5em'})
+                HTML= note.content
   `
 }
 
-/*
-const Main = () => pug`
-  .pane
-    table.table-striped
-      thead
-        tr
-          th Name
-          th Kind
-          th Date Modified
-          th Author
-      tbody
-        tr.file_arq
-          td bars.scss
-          td Document
-          td Oct 13, 2015
-          td user
-        tr.file_arq
-          td base.scss
-          td Document
-          td Oct 13, 2015
-          td user
-        tr.file_arq
-          td button-groups.scss
-          td Document
-          td Oct 13, 2015
-          td user
-        tr.file_arq
-          td buttons.scss
-          td Document
-          td Oct 13, 2015
-          td user
-        tr.file_arq
-          td docs.scss
-          td Document
-          td Oct 13, 2015
-          td user
-        tr.file_arq
-          td forms.scss
-          td Document
-          td Oct 13, 2015
-          td user
-        tr.file_arq
-          td grid.scss
-          td Document
-          td Oct 13, 2015
-          td user
-        tr.file_arq
-          td icons.scss
-          td Document
-          td Oct 13, 2015
-          td user
-        tr.file_arq
-          td images.scss
-          td Document
-          td Oct 13, 2015
-          td user
-        tr.file_arq
-          td lists.scss
-          td Document
-          td Oct 13, 2015
-          td user
-        tr.file_arq
-          td mixins.scss
-          td Document
-          td Oct 13, 2015
-          td user
-        tr.file_arq
-          td navs.scss
-          td Document
-          td Oct 13, 2015
-          td user
-        tr.file_arq
-          td normalize.scss
-          td Document
-          td Oct 13, 2015
-          td user
-        tr.file_arq
-          td photon.scss
-          td Document
-          td Oct 13, 2015
-          td user
-        tr.file_arq
-          td tables.scss
-          td Document
-          td Oct 13, 2015
-          td user
-        tr.file_arq
-          td tabs.scss
-          td Document
-          td Oct 13, 2015
-          td user
-        tr.file_arq
-          td utilities.scss
-          td Document
-          td Oct 13, 2015
-          td user
-        tr.file_arq
-          td variables.scss
-          td Document
-          td Oct 13, 2015
-          td user
-        
-    div(style={margin: 15})
-      button.btn.btn-default Default
-      | 
-      button.btn.btn-primary Primary
-      | 
-      button.btn.btn-positive Positive
-      | 
-      button.btn.btn-negative Negative
-      | 
-      button.btn.btn-warning Warning
-`*/
+function Editor({note, updateNote, version}) {
+  if (!note)
+    return null
+  return pug`
+    .fill.col.padded
+      input#note-title(
+        type='text'
+        placeholder='Title'
+        value=note.title
+        onChange=e => updateNote({title: e.target.value})
+      )
+      HTML.markdown-body.selectable-text.fill(
+        live=true
+        spellcheck=false
+        deps=[note.path, note.loaded]
+        contentEditable="true"
+        suppressContentEditableWarning
+        style={flex: 1, outline: 'none'}
+        onInput=e => {
+          console.log(e.target.innerHTML)
+          updateNote({content: e.target.innerHTML})
+        }
+      )
+        = note.content
+  `
+}
+
+function HTML({children, live = false, deps=[], ...props}) {
+  const ref = React.useRef()
+
+  React.useEffect(() => {
+    ref.current.innerHTML = children
+  }, deps.concat(live ? [] : [children]))
+
+  return pug`
+    span(ref=ref ...props)
+  `
+}

@@ -19,8 +19,8 @@ function EditBar() {
       .btn-group
         FormatButton(icon='link' command='createLink')
         FormatButton(icon='code' command='fontName' param='monospace')
-        FormatButton(icon='type-underline' command='underline')
-        FormatButton(icon='type-strikethrough' command='strikeThrough')
+        //FormatButton(icon='type-underline' command='underline')
+        //FormatButton(icon='type-strikethrough' command='strikeThrough')
       //.btn-group
         FormatButton(icon='type-h1' command='formatBlock' param='h1')
         FormatButton(icon='type-h2' command='formatBlock' param='h2')

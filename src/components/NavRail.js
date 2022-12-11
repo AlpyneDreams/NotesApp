@@ -1,26 +1,25 @@
 import React from 'react'
 import Tabs from './TabBar'
 
-export default function NavRail() {
+export default function NavRail({notebooks=[], switchNotebook=(i) => {}}) {
   return <Tabs
     id='nav-rail'
     direction='vertical'
     Root={({children}) => pug`
-      .pane.pane-mini.sidebar
+      .pane.sidebar(style={flex: 0.25})
         nav.nav-group
           = children
     `}
-    Tab={({active, focus, close, color}) => pug`
-      a.nav-group-item(className=(active && 'active') onClick=focus)
-        span.icon.icon-book(style={color})
+    Tab={({active, index, focus, close, ...notebook}) => pug`
+      a.nav-group-item(className=(active && 'active') onClick=() => {
+        switchNotebook(index)
+        focus()
+      })
+        span.icon.icon-book(style={color: notebook.color})
+        = notebook.title
     `}
     New={() => null}
-    tabs={[
-      {color: '#fc605b'},
-      {color: '#fdbc40'},
-      {color: '#34c84a'},
-      {color: '#57acf5'},
-    ]}
+    tabs={notebooks}
   />
   return pug`
     .pane.pane-mini.sidebar

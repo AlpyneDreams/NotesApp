@@ -79,7 +79,7 @@ body {
 }
 
 .nav-group-item {
-  height: 26px;
+  min-height: 26px;
 }
 
 /* Utilities */
@@ -115,4 +115,18 @@ code {
 
 font[face=monospace] {
   @extend code;
+}
+
+#note-title {
+  border: none;
+  outline: none;
+  width: 300px;
+  margin-bottom: 16px;
+  border-bottom: 1px solid rgba(0, 0, 0, .15);
+  font-size: 24px;
+}
+
+#note-title::placeholder {
+  font-weight: 300;
+  color:rgba(0, 0, 0, .3);
 }

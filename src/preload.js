@@ -1,2 +1,7 @@
-// See the Electron documentation for details on how to use preload scripts:
-// https://www.electronjs.org/docs/latest/tutorial/process-model#preload-scripts
+import { contextBridge } from 'electron'
+import fs from 'fs'
+import path from 'path'
+
+// You better not let *any* remote or untrusted code run in the renderer!
+contextBridge.exposeInMainWorld('fs', fs)
+contextBridge.exposeInMainWorld('Path', path)
