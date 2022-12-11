@@ -1,4 +1,5 @@
 import React from 'react'
+import Reorder, {reorder} from 'react-reorder'
 
 function getSplice(arr, ...args) {
   arr = [...arr]
@@ -7,7 +8,9 @@ function getSplice(arr, ...args) {
 }
 
 export default function Tabs({
-  tabs: tabList = [{name: 'Tab'}, {name: 'Tab'}, {name: 'Tab'}],
+  tabs: tabList = [{name: 'Tab 1'}, {name: 'Tab 2'}, {name: 'Tab 3'}],
+  direction = 'horizontal',
+  id='tab-bar',
   activeTab = 0,
   Tab=BarTab,
   Root=BarRoot,
@@ -28,11 +31,43 @@ export default function Tabs({
         setActive(active - 1)
   }
 
+  function onReorder(event, previousIndex, nextIndex, fromId, toId) {
+    if (previousIndex === tabs.length)
+      return
+    setTabs(reorder(tabs, previousIndex, nextIndex))
+  }
+  
+
+  return pug`
+    Reorder(
+      reorderId=id
+      lock=(direction === 'vertical') ? 'horizontal' : 'vertical'
+      component=Root
+      onReorder=onReorder
+      holdTime=200
+      placeholder=${<Tab/>}
+    )
+      each tab, i in [...tabs, null]
+        if tab != null
+          .fill(key=i)
+            Tab(
+              key=i
+              index=i
+              active=(i === active)
+              focus=() => setActive(i)
+              close=tabs.length > 1 && (e => {e.stopPropagation(); closeTab(i)})
+              ...tab
+            )
+        else
+          New(key='new-tab' onClick=newTab)    
+  `
+
   return pug`
     Root
       ${tabs.map((tab, i) => 
         <Tab
           key={i}
+          index={i}
           active={i === active}
           focus={() => setActive(i)}
           close={tabs.length > 1 && (e => {e.stopPropagation(); closeTab(i)})}

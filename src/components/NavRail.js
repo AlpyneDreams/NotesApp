@@ -3,6 +3,8 @@ import Tabs from './TabBar'
 
 export default function NavRail() {
   return <Tabs
+    id='nav-rail'
+    direction='vertical'
     Root={({children}) => pug`
       .pane.pane-mini.sidebar
         nav.nav-group
