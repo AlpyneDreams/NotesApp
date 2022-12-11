@@ -97,7 +97,6 @@ function Editor({note, updateNote}) {
         suppressContentEditableWarning
         style={flex: 1, outline: 'none'}
         onInput=e => {
-          console.log(e.target.innerHTML)
           updateNote({content: e.target.innerHTML})
         }
       )
