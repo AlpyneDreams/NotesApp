@@ -69,7 +69,8 @@ function App() {
   }
 
   function addNote() {
-    const note = new Note()
+    const note = new Note({directory: notebook.path})
+    note.save()
     notebook.notes.push(note)
     setNote(notebook.notes.length - 1)
   }
@@ -108,7 +109,7 @@ function Editor({note, updateNote}) {
         type='text'
         placeholder='Title'
         value=note.title
-        onChange=e => updateNote({title: e.target.value})
+        onChange=e => updateNote({title: e.target.value, modified: true})
       )
       HTML.fill.markdown-body.selectable-text(
         live=true
