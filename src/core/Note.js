@@ -14,7 +14,7 @@ function parseHtml(html) {
 
 export default class Note {
   title = ''
-  content = null
+  content = ''
   mdContent = null
   path = ''
   loaded = true

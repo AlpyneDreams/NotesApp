@@ -2,7 +2,7 @@ import React from 'react'
 
 export default function WindowControls() {
   return pug`
-    .toolbar-actions.row(style={marginLeft: 12, marginRight: 4, paddingTop: 4, paddingBottom: 4, webkitAppRegion: 'no-drag'})
+    .toolbar-actions.row(style={marginLeft: 12, marginRight: 4, paddingTop: 4, paddingBottom: 4})
       Close
       Maximize
       Minimize
@@ -19,6 +19,7 @@ function TrafficLight({color, stroke, ...props}) {
       style={
         color: color,
         WebkitTextStroke: stroke ? '0.5px ' + stroke : null,
+        WebkitAppRegion: 'no-drag',
         fontSize: 18,
         marginRight: 8,
         lineHeight: 1,

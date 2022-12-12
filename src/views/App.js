@@ -81,7 +81,7 @@ function App() {
     const note = new Note({directory: notebook.path})
     note.save()
     notebook.notes.push(note)
-    setNote(notebook.notes.length - 1)
+    switchNote(notebook.notes.length - 1)
   }
 
   const NotesProvider = NotesContext.Provider
