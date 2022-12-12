@@ -66,7 +66,7 @@ function Toolbar() {
                 li: a.dropdown-item(href='#') Switch to Dark Theme
                 li: hr.dropdown-divider
                 li: a.dropdown-item(href='#') Quit
-            TooltipButton(icon='icon-floppy' title='Save' onClick=() => app.note.save())
+            TooltipButton(disabled=!app.note.modified icon='icon-floppy' title='Save' onClick=() => app.note.save())
 
         .pane-sm.fill(style={pointerEvents: 'none'})
         EditBar
@@ -76,19 +76,19 @@ function Toolbar() {
 function TooltipButton({title, icon, ...props}) {
   const ref = React.useRef()
   
-  if (title) {
-    React.useLayoutEffect(() => {
+  React.useLayoutEffect(() => {
+    if (title)
       new bootstrap.Tooltip(ref.current, {placement: 'bottom'})
-    })
-  }
+  }, [])
 
   let className = 'bi bi-' + icon
   if (icon.startsWith('icon-'))
     className = 'icon ' + icon
   
   return pug`
-    button.btn.btn-default(title=title ref=ref ...props)
-      i(className=className style={fontSize: 16})
+    button.btn.btn-default.p-0(...props)
+      div(title=title ref=ref style={padding: '3px 8px', pointerEvents: 'all'})
+        i(className=className style={fontSize: 16})
   `
 }
 

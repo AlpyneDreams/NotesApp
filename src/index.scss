@@ -79,6 +79,11 @@ body {
   @extend .btn-default !optional;
 }
 
+.btn:disabled {
+  opacity: 0.5;
+  cursor: default;
+}
+
 .icon:before {
   line-height: unset !important;
 }
