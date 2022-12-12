@@ -28,7 +28,7 @@ function EditBar() {
         FormatButton(icon='braces' command='formatBlock' param='pre' title='Code Block')
         FormatButton(icon='quote' command='formatBlock' param='blockquote' title='Blockquote')
         FormatButton(icon='list-ul' command='insertUnorderedList' title='Unordered List')
-        FormatButton(icon='list-ol' command='insertUnorderedList' title='Ordered List')
+        FormatButton(icon='list-ol' command='insertOrderedList' title='Ordered List')
         //- TODO: Todo lists
         FormatButton(icon='check2-square' command='insertUnorderedList' title='Checkboxes')
         //FormatButton(icon='type-strikethrough' command='strikeThrough')
