@@ -46,7 +46,14 @@ export default function Tabs({
   function onReorder(event, previousIndex, nextIndex, fromId, toId) {
     if (newButton != null && previousIndex === tabs.length)
       return
+
     setTabs(reorder(tabs, previousIndex, nextIndex))
+
+    // Map indices to new order to keep current tab
+    let indices = Array(tabs.length).fill().map((_, i) => i)
+    indices = reorder(indices, previousIndex, nextIndex)
+
+    setActive(indices.indexOf(active))
   }
 
   return pug`
