@@ -58,8 +58,8 @@ export default function Tabs({
       holdTime=200
       placeholder=${<Tab/>}
     )
-      each tab, i in [...tabs, null]
-        if tab != null
+      each tab, i in [...tabs, -1]
+        if tab != -1
           .row.fill(key=i)
             Tab(
               key=i

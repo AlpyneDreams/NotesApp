@@ -19,7 +19,7 @@ export default class Notebook {
     console.log('Reading notebook:', path)
 
     if (!fs.existsSync(path)) {
-      console.error('Notebook does not exist:', path)
+      console.warn('Notebook does not exist:', path)
       return null
     }
 
@@ -36,6 +36,8 @@ export default class Notebook {
   static loadNotebooks() {
     return Notebook.loadNotebookList().map(
       ({path, ...props}) => Notebook.fromFile(path, props)
+    ).filter(
+      notebook => notebook !== null
     )
   }
 
