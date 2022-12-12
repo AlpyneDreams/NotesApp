@@ -89,14 +89,14 @@ function Editor({note, updateNote}) {
   if (!note)
     return null
   return pug`
-    .fill.col.padded
+    #note-body.fill.col.p-3
       input#note-title(
         type='text'
         placeholder='Title'
         value=note.title
         onChange=e => updateNote({title: e.target.value})
       )
-      HTML.markdown-body.selectable-text.fill(
+      HTML.fill.markdown-body.selectable-text(
         live=true
         spellCheck=false
         deps=[note.path, note.loaded]
