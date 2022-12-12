@@ -18,6 +18,8 @@ export class Note {
   mdContent = null
   path = ''
   loaded = true
+  modified = false
+  onUpdate = () => {}
 
   constructor(props={}) {
     Object.assign(this, props)
@@ -40,6 +42,7 @@ export class Note {
     }
     this.content = dom.innerHTML
     this.loaded = true
+    this.onUpdate()
   }
 
   async save() {
@@ -49,6 +52,8 @@ export class Note {
     this.mdContent = md.makeMarkdown(html)
 
     fs.writeFileSync(this.path, this.mdContent)
+    this.modified = false
+    this.onUpdate()
   }
 
   static fromFile(path) {

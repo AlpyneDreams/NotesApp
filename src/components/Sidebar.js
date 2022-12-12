@@ -66,7 +66,10 @@ export function Sidebar({notes=[], active, addNote=() => {}, switchNote=() => {}
             //img.img-circle.media-object.pull-left(src=placeholder width='32' height='32')
             .media-body
               if note.title
-                h6= note.title
+                h6
+                  if note.modified
+                    | *
+                  = note.title
               else
                 h6.text-muted Untitled
               p(style={maxHeight: '1.5em'})

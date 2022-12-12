@@ -6,6 +6,7 @@ import Reorder from 'react-reorder'
 import { Note, Notebook } from '../core/Note'
 import { useForceUpdate } from '../util'
 import HTML from '../components/HTML'
+import registerHotkeys from '../core/Hotkeys'
 
 const notebookPaths = fs.readdirSync('notes').map(path => Path.join('notes', path))
 
@@ -37,8 +38,10 @@ function App() {
   // Selected note
   const [noteIdx, setNote] = React.useState(notebook.noteIdx)
   const note = notebook.notes[noteIdx]
+  
+  note.onUpdate = forceUpdate
 
-  const updateNote = (props) => {
+  const updateNote = (props = {}) => {
     Object.assign(notebook.notes[noteIdx], props)
     forceUpdate()
   }
@@ -48,7 +51,6 @@ function App() {
   React.useEffect(() => {
     if (!loaded) {
       note.load()
-      updateNote({content: note.content})
     }
   }, [notebookIdx, noteIdx])
 
@@ -65,9 +67,13 @@ function App() {
   }
 
   const NotesProvider = NotesContext.Provider
+  const context = {notebook, note, updateNote}
+
+  // Register hotkeys...
+  React.useEffect(() => registerHotkeys(context), [notebook, note])
 
   return pug`
-    NotesProvider(value={notebook, note, updateNote})
+    NotesProvider(value=context)
       .window-content.col
         Toolbar
         TabBar
@@ -104,7 +110,7 @@ function Editor({note, updateNote}) {
         suppressContentEditableWarning
         style={flex: 1, outline: 'none'}
         onInput=e => {
-          updateNote({content: e.target.innerHTML})
+          updateNote({content: e.target.innerHTML, modified: true})
         }
       )
         = note.content

@@ -38,6 +38,7 @@ The main ones are:
         - [KaTeX](https://katex.org/)
 - [turndown](https://github.com/mixmark-io/turndown)
 - [Webpack](https://webpack.js.org/)
+- [hotkeys.js](https://wangchujiang.com/hotkeys/)
 
 
 <details>
