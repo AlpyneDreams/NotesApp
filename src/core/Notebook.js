@@ -17,6 +17,12 @@ export default class Notebook {
 
   static fromFile(path, props={}) {
     console.log('Reading notebook:', path)
+
+    if (!fs.existsSync(path)) {
+      console.error('Notebook does not exist:', path)
+      return null
+    }
+
     let files = fs.readdirSync(path, 'utf-8')
     files = files.filter(f => f.endsWith('.md'))
     return new Notebook({
