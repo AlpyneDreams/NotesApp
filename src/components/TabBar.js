@@ -8,20 +8,30 @@ function getSplice(arr, ...args) {
 }
 
 export default function Tabs({
-  tabs: tabList = [{name: 'Tab 1'}, {name: 'Tab 2'}, {name: 'Tab 3'}],
+  tabs: tabList = [{name: 'Tab'}], setTabs: setTabList = null,
   direction = 'horizontal',
   id='tab-bar',
-  activeTab = 0,
+  activeTab = 0, setActiveTab = null,
+  onChange = (tab, idx) => {},
+  newTab = () => {return {name: 'Tab'}},
   Tab=BarTab,
   Root=BarRoot,
   New=BarNew
 }) {
-  const [tabs, setTabs] = React.useState(tabList)
-  const [active, setActive] = React.useState(activeTab)
+  let [tabs, setTabs] = []
+  if (!setTabList)
+    [tabs, setTabs] = React.useState(tabList)
+  else
+    [tabs, setTabs] = [tabList, setTabList]
+  
+  const [active, _setActive] = React.useState(activeTab)
 
-  function newTab() {
-    setTabs([...tabs, {name: 'Tab'}])
-    setActive(tabs.length)
+  const setActive = (i, tab) => {_setActive(i); onChange(tab ?? tabs[i], i)}
+
+  function addTab() {
+    const tab = newTab()
+    setTabs([...tabs, tab])
+    setActive(tabs.length, tab)
   }
 
   function closeTab(i) {
@@ -31,7 +41,7 @@ export default function Tabs({
         setActive(active - 1)
   }
 
-  const newButton = <New key='new-tab' onClick={newTab} />
+  const newButton = <New key='new-tab' onClick={addTab} />
 
   function onReorder(event, previousIndex, nextIndex, fromId, toId) {
     if (newButton != null && previousIndex === tabs.length)

@@ -5,7 +5,7 @@ import {NavRail, Sidebar} from '../components/Sidebar'
 import Reorder from 'react-reorder'
 import Note from '../core/Note'
 import Notebook from '../core/Notebook'
-import { useForceUpdate } from '../util'
+import { useForceUpdate, useObjectState } from '../util'
 import HTML from '../components/HTML'
 import registerHotkeys from '../core/Hotkeys'
 
@@ -32,6 +32,10 @@ function App() {
   
   const forceUpdate = useForceUpdate()
 
+  const [tabs, setTabs] = React.useState([{name: 'Tab', notebookIdx: 0, noteIdx: 0}])
+  const [tabIdx, setTabIdx] = React.useState(0)
+  const tab = tabs[tabIdx]
+
   // Selected notebook
   const [notebookIdx, setNotebook] = React.useState(0)
   const notebook = notebooks[notebookIdx]
@@ -52,13 +56,29 @@ function App() {
   React.useEffect(() => {
     if (!loaded) {
       note.load()
+      tab.name = note.title
     }
   }, [notebookIdx, noteIdx])
 
   const switchNotebook = (i) => {
+    // Store currently open note in notebook
     notebooks[notebookIdx].noteIdx = noteIdx
+
     setNotebook(i)
     setNote(notebooks[i].noteIdx)
+    
+    // Update current tab
+    tab.notebookIdx = i
+    tab.name = notebooks[i].notes[notebooks[i].noteIdx].title
+    setTabs(tabs)
+  }
+
+  function switchNote(i) {
+    setNote(i)
+
+    tab.noteIdx = i
+    tab.name = notebook.notes[i].title
+    setTabs(tabs)
   }
 
   function addNotebook(path, color) {
@@ -85,10 +105,18 @@ function App() {
     NotesProvider(value=context)
       .window-content.col
         Toolbar
-        TabBar
+        TabBar(
+          tabs=tabs setTabs=setTabs
+          onChange=(tab, i) => {
+            setTabIdx(i)
+            setNotebook(tab.notebookIdx)
+            setNote(tab.noteIdx)
+          }
+          newTab=() => ({name: note.title, notebookIdx, noteIdx})
+        )
         .row.fill(style={overflow: 'hidden'})
           NavRail(notebooks=notebooks switchNotebook=switchNotebook)
-          Sidebar(notes=notebook.notes active=noteIdx addNote=addNote switchNote=setNote)
+          Sidebar(notes=notebook.notes active=noteIdx addNote=addNote switchNote=switchNote)
           .pane.row.fill.justify-content-center
             if loaded
               Editor(note=note updateNote=updateNote)
