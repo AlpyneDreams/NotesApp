@@ -1,13 +1,4 @@
-
-import MarkdownIt from 'markdown-it'
-
-const md = new MarkdownIt({
-  html: true
-})
-md.use(require('markdown-it-front-matter'), function(fm) {})
-md.use(require('markdown-it-underline'))
-md.use(require('markdown-it-katex'))
-md.use(require('markdown-it-highlightjs'), {hljs: require('highlight.js')})
+import md from './Markdown'
 
 /** @type {import('fs')} */
 const fs = window.fs
@@ -24,6 +15,7 @@ function parseHtml(html) {
 export class Note {
   title = ''
   content = null
+  mdContent = null
   path = ''
   loaded = true
 
@@ -35,8 +27,10 @@ export class Note {
   }
 
   async load() {
+    console.log('Loading note:', this.path)
     const body = fs.readFileSync(this.path, 'utf-8')
-    const html = md.render(body)
+    this.mdContent = body
+    const html = md.makeHTML(body)
     const dom = parseHtml(html)
 
     const h1 = dom.querySelector('h1')
@@ -45,7 +39,16 @@ export class Note {
       dom.removeChild(h1)
     }
     this.content = dom.innerHTML
-    this.loaded = true    
+    this.loaded = true
+  }
+
+  async save() {
+    console.log('Saving note:', this.path)
+
+    const html = `<h1>${this.title}</h1>` + this.content
+    this.mdContent = md.makeMarkdown(html)
+
+    fs.writeFileSync(this.path, this.mdContent)
   }
 
   static fromFile(path) {
@@ -67,6 +70,7 @@ export class Notebook {
   }
 
   static fromFile(path) {
+    console.log('Reading notebook:', path)
     const files = fs.readdirSync(path, 'utf-8')
     return new Notebook({
       title: Path.basename(path),

@@ -2606,6 +2606,11 @@ domhandler@^4.0.0, domhandler@^4.2.0, domhandler@^4.3.1:
   dependencies:
     domelementtype "^2.2.0"
 
+domino@^2.1.6:
+  version "2.1.6"
+  resolved "https://registry.yarnpkg.com/domino/-/domino-2.1.6.tgz#fe4ace4310526e5e7b9d12c7de01b7f485a57ffe"
+  integrity sha512-3VdM/SXBZX2omc9JF9nOPCtDaYQ67BGp5CoLpIQlO2KCAPETs8TcDHacF26jXadGbvUteZzRTeos2fhID5+ucQ==
+
 domutils@^2.5.2, domutils@^2.8.0:
   version "2.8.0"
   resolved "https://registry.npmjs.org/domutils/-/domutils-2.8.0.tgz"
@@ -4250,11 +4255,6 @@ markdown-it-katex@^2.0.3:
   integrity sha512-nUkkMtRWeg7OpdflamflE/Ho/pWl64Lk9wNBKOmaj33XkQdumhXAIYhI0WO03GeiycPCsxbmX536V5NEXpC3Ng==
   dependencies:
     katex "^0.6.0"
-
-markdown-it-underline@^1.0.1:
-  version "1.0.1"
-  resolved "https://registry.yarnpkg.com/markdown-it-underline/-/markdown-it-underline-1.0.1.tgz#43a54a541d95d739b43157701f1da306d7c300b2"
-  integrity sha512-J597ni39vPHIH1ONVZoDvQKUUXkOqoB93bm6Fc/5Deu6XaWMXrT0xf2m2r9qZCA8dncWJ5V8d5PyGkpmQuy/vg==
 
 markdown-it@^13.0.1:
   version "13.0.1"
@@ -6152,6 +6152,13 @@ tslib@^2.0.3, tslib@^2.1.0:
   version "2.4.1"
   resolved "https://registry.npmjs.org/tslib/-/tslib-2.4.1.tgz"
   integrity sha512-tGyy4dAjRIEwI7BzsB0lynWgOpfqjUdq91XXAlIWD2OwKBH7oCl/GZG/HT4BOHrTlPMOASlMQ7veyTqpmRcrNA==
+
+turndown@^7.1.1:
+  version "7.1.1"
+  resolved "https://registry.yarnpkg.com/turndown/-/turndown-7.1.1.tgz#96992f2d9b40a1a03d3ea61ad31b5a5c751ef77f"
+  integrity sha512-BEkXaWH7Wh7e9bd2QumhfAXk5g34+6QUmmWx+0q6ThaVOLuLUqsnkq35HQ5SBHSaxjSfSM7US5o4lhJNH7B9MA==
+  dependencies:
+    domino "^2.1.6"
 
 type-fest@^0.13.1:
   version "0.13.1"

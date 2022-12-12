@@ -24,24 +24,29 @@ const notebooks = [
 ]
 */
 
+export const NotesContext = React.createContext()
+
 function App() {
   
   const forceUpdate = useForceUpdate()
 
+  // Selected notebook
   const [notebookIdx, setNotebook] = React.useState(0)
   const notebook = notebooks[notebookIdx]
 
+  // Selected note
   const [noteIdx, setNote] = React.useState(notebook.noteIdx)
   const note = notebook.notes[noteIdx]
+
   const updateNote = (props) => {
-    notebook.notes[noteIdx] = {...note, ...props}
+    Object.assign(notebook.notes[noteIdx], props)
     forceUpdate()
   }
-
+  
+  // Load note if it's not yet loaded
   const loaded = note.loaded
   React.useEffect(() => {
     if (!loaded) {
-      console.log('Loading note content...')
       note.load()
       updateNote({content: note.content})
     }
@@ -59,18 +64,20 @@ function App() {
     setNote(notebook.notes.length - 1)
   }
 
+  const NotesProvider = NotesContext.Provider
+
   return pug`
-    .window-content.col
-      Toolbar
-      TabBar
-      .row.fill(style={overflow: 'hidden'})
-        NavRail(notebooks=notebooks switchNotebook=switchNotebook)
-        Sidebar(notes=notebook.notes active=noteIdx addNote=addNote switchNote=setNote)
-        .pane.col.fill
-          if loaded
-            Editor(note=note updateNote=updateNote)
-          else
-            .d-flex.justify-content-center
+    NotesProvider(value={notebook, note, updateNote})
+      .window-content.col
+        Toolbar
+        TabBar
+        .row.fill(style={overflow: 'hidden'})
+          NavRail(notebooks=notebooks switchNotebook=switchNotebook)
+          Sidebar(notes=notebook.notes active=noteIdx addNote=addNote switchNote=setNote)
+          .pane.row.fill.justify-content-center
+            if loaded
+              Editor(note=note updateNote=updateNote)
+            else
               .spinner-border.text-primary(style={margin: 20})
 
   `

@@ -1,20 +1,12 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import WindowControls from './WindowControls'
 import bootstrap from '../dist/bootstrap/js/bootstrap.bundle.min.js'
+import { NotesContext } from '../views/App'
 
 function EditBar() {
-  function FormatButton({title, icon, command, param=null }) {
-    const ref = React.useRef()
-    
-    if (title)
-      React.useLayoutEffect(() => {
-        console.log(ref.current)
-        new bootstrap.Tooltip(ref.current, {placement: 'bottom'})
-      })
-
+  function FormatButton({command, param=null, ...props}) {
     return pug`
-      button.btn.btn-default(title=title ref=ref onClick=() => document.execCommand(command, false, param))
-        i.bi(className='bi-' + icon style={fontSize: 16})
+      TooltipButton(...props onClick=() => document.execCommand(command, false, param))
     `
   }
 
@@ -56,39 +48,50 @@ function EditBar() {
 }
 
 
-const Toolbar = () => pug`
-  header.toolbar.toolbar-header.draggable.col
-    .row
-      .pane-mini.row(style={width: 150})
-        WindowControls
-        .toolbar-actions(style={paddingTop: 4, paddingBottom: 4})
-          .dropdown
-            button.btn.btn-default.btn-dropdown(data-bs-toggle='dropdown')
-              i.icon.icon-cog
-            ul.dropdown-menu
-              .dropdown-arrow
-              li: a.dropdown-item(href='#') Switch to Dark Theme
-              li: hr.dropdown-divider
-              li: a.dropdown-item(href='#') Quit
-      .pane-sm.fill(style={pointerEvents: 'none'})
-      EditBar
-      //.toolbar-actions.fill
-        .btn-group
-          button.btn.btn-default
-            span.icon.icon-home
-          button.btn.btn-default
-            span.icon.icon-folder
-          button.btn.btn-default.active
-            span.icon.icon-cloud
-          button.btn.btn-default
-            span.icon.icon-popup
-          button.btn.btn-default
-            span.icon.icon-shuffle
-        button.btn.btn-default
-          span.icon.icon-home.icon-text
-          |   Filters
-        button.btn.btn-default.btn-dropdown.pull-right
-          span.icon.icon-megaphone
-`
+function Toolbar() {
+
+  const app = useContext(NotesContext)
+
+  return pug`
+    header.toolbar.toolbar-header.draggable.col
+      .row
+        .pane-mini.row(style={width: 150})
+          WindowControls
+          .toolbar-actions.row(style={paddingTop: 4, paddingBottom: 4})
+            .dropdown
+              button.btn.btn-default.btn-dropdown(data-bs-toggle='dropdown')
+                i.icon.icon-cog
+              ul.dropdown-menu
+                .dropdown-arrow
+                li: a.dropdown-item(href='#') Switch to Dark Theme
+                li: hr.dropdown-divider
+                li: a.dropdown-item(href='#') Quit
+            TooltipButton(icon='icon-floppy' title='Save' onClick=() => app.note.save())
+
+        .pane-sm.fill(style={pointerEvents: 'none'})
+        EditBar
+  `
+}
+
+function TooltipButton({title, icon, ...props}) {
+  const ref = React.useRef()
+  
+  if (title) {
+    React.useLayoutEffect(() => {
+      new bootstrap.Tooltip(ref.current, {placement: 'bottom'})
+    })
+  }
+
+  let className = 'bi bi-' + icon
+  if (icon.startsWith('icon-'))
+    className = 'icon ' + icon
+  
+  return pug`
+    button.btn.btn-default(title=title ref=ref ...props)
+      i(className=className style={fontSize: 16})
+  `
+}
+
+
 
 export default Toolbar
