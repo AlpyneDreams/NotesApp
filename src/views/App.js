@@ -9,22 +9,7 @@ import { useForceUpdate, useObjectState } from '../util'
 import HTML from '../components/HTML'
 import registerHotkeys from '../core/Hotkeys'
 
-const notebookPaths = fs.readdirSync('notes').map(path => Path.join('notes', path))
-
-const notebooks = notebookPaths.map(path => Notebook.fromFile(path))
-/*
-const notebooks = [
-  new Notebook({title: 'Notebook 1', color: '#fc605b', notes: [
-    new Note({title: 'Hello', content: 'Content'}),
-    new Note({title: 'Hello 2', content: 'Content 2'})
-  ]}),
-  new Notebook({title: 'Notebook 2', color: '#fdbc40', notes: [
-    new Note({title: 'Hello 3', content: 'Content 3'})
-  ]}),
-  new Notebook({title: 'Notebook 3', color: '#34c84a'}),
-  new Notebook({title: 'Notebook 4', color: '#57acf5'}),
-]
-*/
+const notebooks = Notebook.loadNotebooks()
 
 export const NotesContext = React.createContext()
 
@@ -41,16 +26,11 @@ function App() {
   const notebook = notebooks[notebookIdx]
 
   // Selected note
-  const [noteIdx, setNote] = React.useState(notebook.noteIdx)
+  const [noteIdx, setNote] = React.useState(notebook?.noteIdx)
   const note = notebook.notes[noteIdx]
   
   note.onUpdate = forceUpdate
 
-  const updateNote = (props = {}) => {
-    Object.assign(notebook.notes[noteIdx], props)
-    forceUpdate()
-  }
-  
   // Load note if it's not yet loaded
   const loaded = note.loaded
   React.useEffect(() => {
@@ -59,9 +39,16 @@ function App() {
       tab.name = note.title
     }
   }, [notebookIdx, noteIdx])
+  
+  /// Callbacks ////
+
+  const updateNote = (props = {}) => {
+    Object.assign(notebook.notes[noteIdx], props)
+    forceUpdate()
+  }
 
   const switchNotebook = (i) => {
-    // Store currently open note in notebook
+    // Store currently open note for this notebook
     notebooks[notebookIdx].noteIdx = noteIdx
 
     setNotebook(i)
@@ -76,6 +63,7 @@ function App() {
   function switchNote(i) {
     setNote(i)
 
+    // Update current tab
     tab.noteIdx = i
     tab.name = notebook.notes[i].title
     setTabs(tabs)
@@ -85,6 +73,7 @@ function App() {
     const notebook = Notebook.fromFile(path)
     notebook.color = color
     notebooks.push(notebook)
+    Notebook.storeNotebookList(notebooks)
     setNotebook(notebooks.length - 1)
   }
 
