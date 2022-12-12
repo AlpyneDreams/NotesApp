@@ -3,7 +3,8 @@ import Toolbar from '../components/Toolbar'
 import TabBar from '../components/TabBar'
 import {NavRail, Sidebar} from '../components/Sidebar'
 import Reorder from 'react-reorder'
-import { Note, Notebook } from '../core/Note'
+import Note from '../core/Note'
+import Notebook from '../core/Notebook'
 import { useForceUpdate } from '../util'
 import HTML from '../components/HTML'
 import registerHotkeys from '../core/Hotkeys'
@@ -60,6 +61,13 @@ function App() {
     setNote(notebooks[i].noteIdx)
   }
 
+  function addNotebook(path, color) {
+    const notebook = Notebook.fromFile(path)
+    notebook.color = color
+    notebooks.push(notebook)
+    setNotebook(notebooks.length - 1)
+  }
+
   function addNote() {
     const note = new Note()
     notebook.notes.push(note)
@@ -67,7 +75,7 @@ function App() {
   }
 
   const NotesProvider = NotesContext.Provider
-  const context = {notebook, note, updateNote}
+  const context = {notebook, note, updateNote, addNotebook}
 
   // Register hotkeys...
   React.useEffect(() => registerHotkeys(context), [notebook, note])

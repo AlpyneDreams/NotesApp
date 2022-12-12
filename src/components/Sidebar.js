@@ -1,6 +1,7 @@
 import React from 'react'
 import Tabs from './TabBar'
 import HTML from './HTML'
+import { NotesContext } from '../views/App'
 
 function AddButton({...props}) {
   return pug`
@@ -12,19 +13,37 @@ function AddButton({...props}) {
 export function NavRail({notebooks=[], switchNotebook=(i) => {}}) {
   
   function AddNotebook() {
+    const [folder, setFoler] = React.useState()
+    const [color, setColor] = React.useState('#737475')
+    const app = React.useContext(NotesContext)
+
     return pug`
       .dropdown
-        AddButton(data-bs-toggle='dropdown')
-        .dropdown-menu.bs-grid.dropdown-menu-start.p-3(style={minWidth: 300})
+        AddButton(data-bs-toggle='dropdown' data-bs-auto-close='outside')
+        .dropdown-menu.bs-grid.dropdown-menu-start.p-3(style={minWidth: 450})
           .dropdown-arrow
           .row.mb-1
-            label.col.col-form-label.me-4 Name
-            .col-8: input.form-control.form-control-sm(type='text' placeholder='Notebook')
-          .row.justify-content-between
-            label.col.col-form-label.me-4 Color
-            .col-8: input.form-control.form-control-sm(type='color' value='#737475' onChange=()=>{} style={maxWidth: 80})
+            label.col-2.col-form-label Folder
+            .col-10.input-group.input-group-sm(style={height: 10})
+              button.bttn.bttn-white.bttn-sm(
+                type='file'
+                value=folder
+                onClick=${async e => {
+                  let folder = await electronAPI.showFolderPicker()
+                  if (folder)
+                    setFoler(folder)
+                }}
+              )
+                | Select Folder
+              input.form-control(value=(folder || 'No folder selected') readOnly=true)
+          .row
+            label.col-2.col-form-label Color
+            .col-10: input.form-control.form-control-sm(type='color' value=color onChange=e => setColor(e.target.value) style={maxWidth: 80})
           .d-flex
-            button.btn.w-100.btn-primary.mt-3 Create Notebook
+            button.btn.w-100.btn-primary.mt-3(disabled=!folder onClick=() => {
+              app.addNotebook(folder, color)
+            })
+              | Create Notebook
     `
   }
 

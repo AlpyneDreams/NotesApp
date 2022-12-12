@@ -1,4 +1,4 @@
-const { app, screen, BrowserWindow, nativeTheme } = require('electron')
+const { app, screen, BrowserWindow, nativeTheme, ipcMain, dialog } = require('electron')
 const path = require('path')
 
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
@@ -29,6 +29,11 @@ const createWindow = () => {
     }
   })
 
+  ipcMain.handle('open-dialog', async (e, options) => {
+    let {canceled, filePaths} = await dialog.showOpenDialog(mainWindow, options)
+    return canceled ? null : (filePaths.length > 1 ? filePaths : filePaths[0])
+  })
+
   // TEMP: While there's no dark mode
   nativeTheme.themeSource = 'light'
 
@@ -36,7 +41,7 @@ const createWindow = () => {
   mainWindow.loadURL(MAIN_WINDOW_WEBPACK_ENTRY)
 
   // Open the DevTools.
-  //mainWindow.webContents.openDevTools()
+  mainWindow.webContents.openDevTools()
 };
 
 // This method will be called when Electron has finished

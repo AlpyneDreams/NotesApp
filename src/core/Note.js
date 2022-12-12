@@ -12,7 +12,7 @@ function parseHtml(html) {
   return template
 }
 
-export class Note {
+export default class Note {
   title = ''
   content = null
   mdContent = null
@@ -58,28 +58,5 @@ export class Note {
 
   static fromFile(path) {
     return new Note({title: Path.basename(path, '.md'), path, loaded: false})
-  }
-}
-
-export class Notebook {
-  title = ''
-  color = null
-  notes = []
-  noteIdx = 0
-
-  constructor(props={}) {
-    Object.assign(this, props)
-
-    if (this.notes.length === 0)
-      this.notes.push(new Note())
-  }
-
-  static fromFile(path) {
-    console.log('Reading notebook:', path)
-    const files = fs.readdirSync(path, 'utf-8')
-    return new Notebook({
-      title: Path.basename(path),
-      notes: files.map(file => Note.fromFile(Path.join(path, file)))
-    })
   }
 }
