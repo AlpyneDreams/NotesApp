@@ -65,7 +65,7 @@ function Toolbar() {
                 .dropdown-arrow
                 li: a.dropdown-item(href='#') Switch to Dark Theme
                 li: hr.dropdown-divider
-                li: a.dropdown-item(href='#') Quit
+                li: a.dropdown-item(href='#' onClick=window.close) Quit
             TooltipButton(disabled=!app.note.modified icon='icon-floppy' title='Save' onClick=() => app.note.save())
 
         .pane-sm.fill(style={pointerEvents: 'none'})
