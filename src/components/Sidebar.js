@@ -56,7 +56,7 @@ export function NavRail({notebooks=[], notebookIdx, switchNotebook=(i) => {}}) {
     direction='vertical'
     activeTab={notebookIdx} setActiveTab={switchNotebook}
     Root={({children}) => pug`
-      .pane.sidebar(style={flex: 0.3, width: 150, overflow: 'visible'})
+      .pane.sidebar(style={maxWidth: 150, overflow: 'visible'})
         nav.nav-group
           .row.justify-content-between
             h5.nav-group-title Notebooks
