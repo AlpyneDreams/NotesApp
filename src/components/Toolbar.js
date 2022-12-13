@@ -12,7 +12,7 @@ function EditBar() {
   }
 
   return pug`
-    .toolbar-actions.row.fill(style={paddingTop: 4, paddingBottom: 4})
+    .toolbar-actions.row.fill.ps-2(style={paddingTop: 4, paddingBottom: 4})
       .btn-group
         FormatButton(icon='type-bold' command='bold' title='Bold')
         FormatButton(icon='type-italic' command='italic' title='Italic')
@@ -53,7 +53,7 @@ function Toolbar() {
           WindowControls
           .toolbar-actions.row(style={paddingTop: 4, paddingBottom: 4})
             .dropdown
-              button.btn.btn-default.btn-dropdown(data-bs-toggle='dropdown')
+              button.btn.bttn.bttn-white.bttn-sm.dropdown-toggle(data-bs-toggle='dropdown')
                 i.icon.icon-cog
               ul.dropdown-menu
                 .dropdown-arrow
@@ -80,12 +80,10 @@ function TooltipButton({title, icon, ...props}) {
     className = 'icon ' + icon
   
   return pug`
-    button.btn.btn-default.p-0(...props)
+    button.btn.bttn.bttn-sm.bttn-white.p-0(...props)
       div(title=title ref=ref style={padding: '3px 8px', pointerEvents: 'all'})
         i(className=className style={fontSize: 16})
   `
 }
-
-
 
 export default Toolbar

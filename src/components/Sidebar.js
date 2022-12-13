@@ -44,7 +44,7 @@ export function NavRail({notebooks=[], notebookIdx, switchNotebook=(i) => {}}) {
             label.col-2.col-form-label Color
             .col-10: input.form-control.form-control-sm(type='color' value=color onChange=e => setColor(e.target.value) style={maxWidth: 80})
           .d-flex
-            button.btn.w-100.btn-primary.mt-3(disabled=!folder onClick=() => {
+            button.bttn.bttn-sm.w-100.bttn-primary.mt-3(disabled=!folder onClick=() => {
               app.addNotebook(folder, color)
             })
               | Create Notebook
