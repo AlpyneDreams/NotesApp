@@ -42,8 +42,8 @@ export default function Search() {
 
   return pug`
     #search.dropdown.ms-auto.me-1
-      button.btn.btn-default.btn-dropdown(data-bs-toggle='dropdown' data-bs-auto-close='outside' ref=dropdown)
-        i.icon.icon-search
+      button.btn.btn-body.btn-sm.btn-dropdown(data-bs-toggle='dropdown' data-bs-auto-close='outside' ref=dropdown)
+        i.bi.bi-search
       .dropdown-menu.dropdown-menu-end.p-2(style={minWidth: 380})
         .dropdown-arrow
         //-.input-group

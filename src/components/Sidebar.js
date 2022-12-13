@@ -7,7 +7,7 @@ import { ModalConfirm } from './Modal'
 
 function AddButton({...props}) {
   return pug`
-    button.bttn.bttn-white.btn-mini.m-1(style={padding: '2px 6px'} ...props)
+    button.btn.btn-body.btn-mini.m-1(style={padding: '2px 6px'} ...props)
       i.bi.bi-plus
   `
 }
@@ -43,11 +43,10 @@ export function NavRail({notebooks=[], notebookIdx, switchNotebook=(i) => {}}) {
           .row
             label.col-2.col-form-label Color
             .col-10: input.form-control.form-control-sm(type='color' value=color onChange=e => setColor(e.target.value) style={maxWidth: 80})
-          .d-flex
-            button.btn.w-100.btn-primary.mt-3(disabled=!folder onClick=() => {
-              app.addNotebook(folder, color)
-            })
-              | Create Notebook
+          button.btn.w-100.btn-primary.mt-3(disabled=!folder style={height: 40} onClick=() => {
+            app.addNotebook(folder, color)
+          })
+            | Create Notebook
     `
   }
 
@@ -56,17 +55,17 @@ export function NavRail({notebooks=[], notebookIdx, switchNotebook=(i) => {}}) {
     direction='vertical'
     activeTab={notebookIdx} setActiveTab={switchNotebook}
     Root={({children}) => pug`
-      .pane.sidebar(style={maxWidth: 150, overflow: 'visible'})
-        nav.nav-group
-          .row.justify-content-between
-            h5.nav-group-title Notebooks
+      .pane.sidebar.bg-body-tertiary(style={maxWidth: 150, overflow: 'visible'})
+        nav.list-group.list-group-flush
+          .row.justify-content-between.p-1
+            h5.small.m-1.mt-2.text-secondary Notebooks
             AddNotebook
           = children
         Dropdown(visible=!!contextMenu onClose=() => setContextMenu(false) pos=contextMenu)
           DropdownItem(onClick=() => app.removeNotebook(contextMenu.index)) Remove Notebook
     `}
     Tab={({active, index, focus, close, ...notebook}) => pug`
-      a.nav-group-item.w-100.d-flex(
+      a.list-group-item.w-100.d-flex(
         className=(active && 'active')
         onClick=(e) => {
           focus()
@@ -74,7 +73,7 @@ export function NavRail({notebooks=[], notebookIdx, switchNotebook=(i) => {}}) {
         }
         onContextMenu=e => setContextMenu({index, x: e.pageX, y: e.pageY})
       )
-        span.icon.icon-book(style={color: notebook.color})
+        span.icon.icon-book.me-2(style={color: !active && notebook.color})
         = notebook.title
     `}
     New={() => null}
@@ -90,20 +89,21 @@ export function Sidebar({notes=[], active}) {
   const [modal, setModal] = React.useState(false)
   
   return pug`
-    .pane.pane-sm.sidebar
-      nav.list-group(style={overflow: 'auto'})
-        .row.justify-content-between
-          h5.nav-group-title Notes
+    .pane-sm.border-start.border-end.bg-body-tertiary
+      nav.list-group.list-group-flush(style={overflow: 'auto'})
+        .list-group-item.p-1.row.justify-content-between
+          h5.small.m-1.mt-2.text-secondary Notes
           AddButton(onClick=app.addNote)
         each note, i in notes
           li.list-group-item(
             key=i
+            style={overflow: 'hidden'}
             className=(active === i ? 'active' : '')
             onClick=() => app.switchNote(i)
             onContextMenu=e => setContextMenu({i, x: e.pageX, y: e.pageY})
           )
-            //img.img-circle.media-object.pull-left(src=placeholder width='32' height='32')
-            .media-body
+            //-img.img-circle.media-object.pull-left(src=placeholder width='32' height='32')
+            //-.media-body
             if note.title
               h6
                 if note.modified

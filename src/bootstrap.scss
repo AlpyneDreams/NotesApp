@@ -7,6 +7,8 @@ $headings-line-height: 1.3;
 // these are pretty subtle
 $enable-gradients: true;
 
+$list-group-bg: 'transparent';
+
 // scss-docs-start import-stack
 // Configuration
 @import "dist/bootstrap/scss/functions";
@@ -32,12 +34,13 @@ $text-muted: #888;
 
 //@import "dist/bootstrap/scss/tables";
 @import "dist/bootstrap/scss/forms";
+@import "dist/bootstrap/scss/buttons";
 @import "dist/bootstrap/scss/buttons-alt";
 //@import "dist/bootstrap/scss/transitions";
 @import "dist/bootstrap/scss/dropdown";
-//@import "dist/bootstrap/scss/button-group";
-//@import "dist/bootstrap/scss/nav";
-//@import "dist/bootstrap/scss/navbar";
+@import "dist/bootstrap/scss/button-group";
+@import "dist/bootstrap/scss/nav";
+@import "dist/bootstrap/scss/navbar";
 //@import "dist/bootstrap/scss/card";
 //@import "dist/bootstrap/scss/accordion";
 //@import "dist/bootstrap/scss/breadcrumb";
@@ -45,7 +48,7 @@ $text-muted: #888;
 //@import "dist/bootstrap/scss/badge";
 //@import "dist/bootstrap/scss/alert";
 //@import "dist/bootstrap/scss/progress";
-//@import "dist/bootstrap/scss/list-group";
+@import "dist/bootstrap/scss/list-group";
 @import "dist/bootstrap/scss/close";
 //@import "dist/bootstrap/scss/toasts";
 @import "dist/bootstrap/scss/modal";

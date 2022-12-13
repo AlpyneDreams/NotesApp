@@ -12,7 +12,8 @@ contextBridge.exposeInMainWorld('electronAPI', {
     })
   },
   findInPage: (text, options) => ipcRenderer.invoke('find', text, options),
-  stopFindInPage: (mode = 'clearSelection') => ipcRenderer.invoke('find', null, mode)
+  stopFindInPage: (mode = 'clearSelection') => ipcRenderer.invoke('find', null, mode),
+  setDarkMode: (enabled) => ipcRenderer.invoke('theme', enabled ? 'dark' : 'light')
 })
 
 // You better not let *any* remote or untrusted code run in the renderer!

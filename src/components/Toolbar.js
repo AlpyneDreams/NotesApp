@@ -45,22 +45,34 @@ function EditBar() {
 function Toolbar() {
 
   const app = useContext(NotesContext)
+  const [dark, _setDark] = React.useState(true)
+
+  const setDark = (dark) => {
+    document.querySelector('#root').setAttribute('data-bs-theme', dark ? 'dark' : 'light')
+    electronAPI.setDarkMode(dark)
+    _setDark(dark)
+  }
+
+  React.useEffect(() => {
+    setDark(dark)
+  }, [])
 
   return pug`
-    header.toolbar.toolbar-header.draggable.col
-      .row
+    header.navbar.draggable.col.bg-body.py-1(style={backgroundImage: 'none'}).bg-body-tertiary
+      .row.w-100
         .pane-mini.row(style={width: 150})
           WindowControls
           .toolbar-actions.row(style={paddingTop: 4, paddingBottom: 4})
             .dropdown
-              button.btn.btn-default.btn-dropdown(data-bs-toggle='dropdown')
-                i.icon.icon-cog
+              button.btn.btn-body.btn-sm.dropdown-toggle(data-bs-toggle='dropdown')
+                i.bi.bi-gear
               ul.dropdown-menu
                 .dropdown-arrow
-                //-li: a.dropdown-item(href='#') Switch to Dark Theme
-                //-li: hr.dropdown-divider
+                li: a.dropdown-item(href='#' onClick=() => setDark(!dark))
+                  | Switch to Light Theme
+                li: hr.dropdown-divider
                 li: a.dropdown-item(href='#' onClick=window.close) Quit
-            TooltipButton(disabled=!app.note.modified icon='icon-floppy' title='Save' onClick=() => app.note.save())
+            TooltipButton(disabled=!app.note.modified icon='save' title='Save' onClick=() => app.note.save())
 
         .pane-sm.fill(style={pointerEvents: 'none'})
         EditBar
@@ -80,7 +92,7 @@ function TooltipButton({title, icon, ...props}) {
     className = 'icon ' + icon
   
   return pug`
-    button.btn.btn-default.p-0(...props)
+    button.btn.btn-sm.btn-body.p-0(...props)
       div(title=title ref=ref style={padding: '3px 8px', pointerEvents: 'all'})
         i(className=className style={fontSize: 16})
   `

@@ -163,7 +163,7 @@ function App() {
         .row.fill(style={overflow: 'hidden'})
           NavRail(notebooks=notebooks notebookIdx=notebookIdx switchNotebook=switchNotebook)
           Sidebar(notes=notebook.notes active=noteIdx)
-          .pane.row.fill.justify-content-xl-center
+          .row.fill.justify-content-xl-center
             if loaded
               Editor(note=note updateNote=updateNote)
             else

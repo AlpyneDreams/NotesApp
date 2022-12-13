@@ -71,15 +71,14 @@ export default function Tabs({
     )
       each tab, i in [...tabs, -1]
         if tab != -1
-          .row.fill(key=i)
-            Tab(
-              key=i
-              index=i
-              active=(i === active)
-              focus=() => setActive(i)
-              close=tabs.length > 1 && (e => {e.stopPropagation(); closeTab(i)})
-              ...tab
-            )
+          Tab(
+            key=i
+            index=i
+            active=(i === active)
+            focus=() => setActive(i)
+            close=tabs.length > 1 && (e => {e.stopPropagation(); closeTab(i)})
+            ...tab
+          )
         else
           = newButton
   `
@@ -87,21 +86,23 @@ export default function Tabs({
 }
 
 const BarTab = ({active, focus, close, name}) => pug`
-  .tab-item(
-    className=active ? 'active' : ''
+  li.nav-item(
     onClick=focus
   )
-    if close
-      span.icon.icon-cancel.icon-close-tab(onClick=close)
-    = name
+    a.nav-link.py-1(
+      className=active ? 'active bg-transparent border-bottom' : ''
+    )
+      = name
+      if close
+        a.btn-close.ms-2(onClick=close)
 `
 
 const BarRoot = ({children}) => pug`
-  .tab-group
+  ul.nav.nav-tabs.align-items-end.bg-body-tertiary
     = children
 `
 
 const BarNew = ({onClick}) => pug`
-  .tab-item.tab-item-fixed(onClick=onClick)
+  a.btn.btn-link.btn-sm.h-100.text-body(onClick=onClick)
     span.icon.icon-plus
 `

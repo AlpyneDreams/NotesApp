@@ -45,9 +45,10 @@ const createWindow = () => {
   mainWindow.webContents.on('found-in-page', (e, result) => {
     mainWindow.webContents.send('found-in-page', result)
   })
-
-  // TEMP: While there's no dark mode
-  nativeTheme.themeSource = 'light'
+  
+  ipcMain.handle('theme', (e, theme) => {
+    nativeTheme.themeSource = theme
+  })
 
   // and load the index.html of the app.
   mainWindow.loadURL(MAIN_WINDOW_WEBPACK_ENTRY)

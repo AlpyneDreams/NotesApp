@@ -8,6 +8,7 @@
  * =====================================================
  */
 
+
 @charset "UTF-8";
 audio,
 canvas,
@@ -332,6 +333,7 @@ h6 {
   clear: both;
 }
 
+/*
 .btn {
   display: inline-block;
   padding: 3px 8px;
@@ -520,7 +522,7 @@ h6 {
 .btn-group .active .icon {
   color: #fff;
 }
-
+*/
 .toolbar {
   min-height: 22px;
   box-shadow: inset 0 1px 0 #f5f4f5;
@@ -710,7 +712,7 @@ img {
 .img-rounded {
   border-radius: 4px;
 }
-
+/*
 .list-group {
   width: 100%;
   list-style: none;
@@ -741,7 +743,7 @@ img {
 .list-group-header {
   padding: 10px;
 }
-
+*/
 .media-object {
   margin-top: 3px;
 }
