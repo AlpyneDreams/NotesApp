@@ -24,7 +24,11 @@ export default function Tabs({
   else
     [tabs, setTabs] = [tabList, setTabList]
   
-  const [active, _setActive] = React.useState(activeTab)
+  let [active, _setActive] = []
+  if (!setActiveTab)
+    [active, _setActive] = React.useState(activeTab)
+  else
+    [active, _setActive] = [activeTab, setActiveTab]
 
   const setActive = (i, tab) => {_setActive(i); onChange(tab ?? tabs[i], i)}
 

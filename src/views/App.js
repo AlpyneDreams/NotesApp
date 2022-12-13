@@ -49,7 +49,8 @@ function App() {
 
   const switchNotebook = (i) => {
     // Store currently open note for this notebook
-    notebooks[notebookIdx].noteIdx = noteIdx
+    if (notebooks[notebookIdx])
+      notebooks[notebookIdx].noteIdx = noteIdx
 
     setNotebook(i)
     setNote(notebooks[i].noteIdx)
@@ -77,6 +78,18 @@ function App() {
     setNotebook(notebooks.length - 1)
   }
 
+  function removeNotebook(i) {
+    if (notebooks.length === 1)
+      return
+    notebooks.splice(i, 1)
+    Notebook.storeNotebookList(notebooks)
+    if (notebookIdx >= i) {
+      switchNotebook(notebookIdx - 1)
+    } else {
+      forceUpdate()
+    }
+  }
+
   function addNote() {
     const note = new Note({directory: notebook.path})
     note.save()
@@ -84,8 +97,24 @@ function App() {
     switchNote(notebook.notes.length - 1)
   }
 
+  function deleteNote(i) {
+    const note = notebook.notes[i]
+    note.delete()
+    notebook.notes.splice(i, 1)
+    if (noteIdx >= i) {
+      setNote(noteIdx - 1)
+    } else {
+      forceUpdate()
+    }
+  }
+
   const NotesProvider = NotesContext.Provider
-  const context = {notebook, note, updateNote, addNotebook}
+  const context = {
+    notebook, note,
+    updateNote,
+    addNotebook, switchNotebook, removeNotebook,
+    addNote, switchNote, deleteNote
+  }
 
   // Register hotkeys...
   React.useEffect(() => registerHotkeys(context), [notebook, note])
@@ -104,8 +133,8 @@ function App() {
           newTab=() => ({name: note.title, notebookIdx, noteIdx})
         )
         .row.fill(style={overflow: 'hidden'})
-          NavRail(notebooks=notebooks switchNotebook=switchNotebook)
-          Sidebar(notes=notebook.notes active=noteIdx addNote=addNote switchNote=switchNote)
+          NavRail(notebooks=notebooks notebookIdx=notebookIdx switchNotebook=switchNotebook)
+          Sidebar(notes=notebook.notes active=noteIdx)
           .pane.row.fill.justify-content-xl-center
             if loaded
               Editor(note=note updateNote=updateNote)

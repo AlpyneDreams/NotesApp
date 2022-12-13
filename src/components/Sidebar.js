@@ -1,7 +1,9 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import Tabs from './TabBar'
 import HTML from './HTML'
 import { NotesContext } from '../views/App'
+import { Dropdown, DropdownItem } from './Dropdown'
+import { ModalConfirm } from './Modal'
 
 function AddButton({...props}) {
   return pug`
@@ -10,12 +12,12 @@ function AddButton({...props}) {
   `
 }
 
-export function NavRail({notebooks=[], switchNotebook=(i) => {}}) {
+export function NavRail({notebooks=[], notebookIdx, switchNotebook=(i) => {}}) {
+  const app = React.useContext(NotesContext)
   
   function AddNotebook() {
     const [folder, setFoler] = React.useState()
     const [color, setColor] = React.useState('#737475')
-    const app = React.useContext(NotesContext)
 
     return pug`
       .dropdown
@@ -50,8 +52,9 @@ export function NavRail({notebooks=[], switchNotebook=(i) => {}}) {
   return <Tabs
     id='nav-rail'
     direction='vertical'
+    activeTab={notebookIdx} setActiveTab={switchNotebook}
     Root={({children}) => pug`
-      .pane.sidebar(style={maxWidth: 150, width: 150, overflow: 'visible'})
+      .pane.sidebar(style={flex: 0.3, width: 150, overflow: 'visible'})
         nav.nav-group
           .row.justify-content-between
             h5.nav-group-title Notebooks
@@ -59,12 +62,16 @@ export function NavRail({notebooks=[], switchNotebook=(i) => {}}) {
           = children
     `}
     Tab={({active, index, focus, close, ...notebook}) => pug`
-      a.nav-group-item.w-100(className=(active && 'active') onClick=() => {
-        switchNotebook(index)
+      a.nav-group-item.w-100.d-flex(className=(active && 'active') onClick=(e) => {
         focus()
+        switchNotebook(index)
       })
         span.icon.icon-book(style={color: notebook.color})
         = notebook.title
+        button.btn-close.small.ms-auto(
+          style={marginTop: 2}
+          onClick=e => {e.stopPropagation(); app.removeNotebook(index)}
+        )
     `}
     New={() => null}
     tabs={notebooks}
@@ -72,26 +79,49 @@ export function NavRail({notebooks=[], switchNotebook=(i) => {}}) {
 
 }
 
-export function Sidebar({notes=[], active, addNote=() => {}, switchNote=() => {}}) {
+export function Sidebar({notes=[], active}) {
 
+  const app = React.useContext(NotesContext)
+  const [contextMenu, setContextMenu] = React.useState(false)
+  const [modal, setModal] = React.useState(false)
+  
   return pug`
     .pane.pane-sm.sidebar
       nav.list-group(style={overflow: 'auto'})
         .row.justify-content-between
           h5.nav-group-title Notes
-          AddButton(onClick=addNote)
+          AddButton(onClick=app.addNote)
         each note, i in notes
-          li.list-group-item(key=i className=(active === i ? 'active' : '') onClick=() => switchNote(i))
+          li.list-group-item(
+            key=i
+            className=(active === i ? 'active' : '')
+            onClick=() => app.switchNote(i)
+            onContextMenu=e => setContextMenu({i, x: e.pageX, y: e.pageY})
+          )
             //img.img-circle.media-object.pull-left(src=placeholder width='32' height='32')
             .media-body
-              if note.title
-                h6
-                  if note.modified
-                    | *
-                  = note.title
-              else
-                h6.text-muted Untitled
-              p(style={maxHeight: '1.5em'})
-                HTML= note.content
+            if note.title
+              h6
+                if note.modified
+                  | *
+                = note.title
+            else
+              h6.text-muted Untitled
+            p(style={maxHeight: '1.5em'})
+              HTML= note.content
+      Dropdown(visible=!!contextMenu onClose=() => setContextMenu(false) pos=contextMenu)
+        DropdownItem.link-danger(onClick=() => setModal(contextMenu.i)) Delete
+      if modal !== false
+        ModalConfirm(
+          title='Delete Note'
+          onClose=() => setModal(false)
+          onConfirm=() => app.deleteNote(modal)
+          description=${<>
+            Are you sure you want to delete <b>{app.notebook.notes[modal].title}</b>?<br/>
+            The file will be deleted permanently.
+          </>}
+          yes='Delete' yesClass='link-danger'
+          no='Cancel'
+        )
   `
 }

@@ -80,6 +80,10 @@ export default class Note {
     this.onUpdate()
   }
 
+  async delete() {
+    fs.unlinkSync(this.path)
+  }
+
   static fromFile(path) {
     return new Note({title: Path.basename(path, '.md'), path, loaded: false})
   }

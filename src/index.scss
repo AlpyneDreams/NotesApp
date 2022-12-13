@@ -125,6 +125,28 @@ body {
   }
 }
 
+// Dropdown item colors...
+@each $name, $color in $theme-colors {
+  .text-hover-#{$name} {
+      &:hover {
+          color: $color !important;
+      }
+
+      &:active {
+          color: shift-color($color, $link-shade-percentage) !important;
+      }
+  }
+
+  .dropdown-item.link-#{$name}:active {
+      color: white !important;
+      background-color: $color;
+  }
+}
+
+.dropdown-item:active {
+  color: $dropdown-link-active-color !important;
+}
+
 /* Utilities */
 
 .row {
