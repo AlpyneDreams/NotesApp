@@ -14,6 +14,8 @@ function AddButton({...props}) {
 
 export function NavRail({notebooks=[], notebookIdx, switchNotebook=(i) => {}}) {
   const app = React.useContext(NotesContext)
+
+  const [contextMenu, setContextMenu] = React.useState(false)
   
   function AddNotebook() {
     const [folder, setFoler] = React.useState()
@@ -60,18 +62,20 @@ export function NavRail({notebooks=[], notebookIdx, switchNotebook=(i) => {}}) {
             h5.nav-group-title Notebooks
             AddNotebook
           = children
+        Dropdown(visible=!!contextMenu onClose=() => setContextMenu(false) pos=contextMenu)
+          DropdownItem(onClick=() => app.removeNotebook(contextMenu.index)) Remove Notebook
     `}
     Tab={({active, index, focus, close, ...notebook}) => pug`
-      a.nav-group-item.w-100.d-flex(className=(active && 'active') onClick=(e) => {
-        focus()
-        switchNotebook(index)
-      })
+      a.nav-group-item.w-100.d-flex(
+        className=(active && 'active')
+        onClick=(e) => {
+          focus()
+          switchNotebook(index)
+        }
+        onContextMenu=e => setContextMenu({index, x: e.pageX, y: e.pageY})
+      )
         span.icon.icon-book(style={color: notebook.color})
         = notebook.title
-        button.btn-close.small.ms-auto(
-          style={marginTop: 2}
-          onClick=e => {e.stopPropagation(); app.removeNotebook(index)}
-        )
     `}
     New={() => null}
     tabs={notebooks}
@@ -110,7 +114,7 @@ export function Sidebar({notes=[], active}) {
             p(style={maxHeight: '1.5em'})
               HTML= note.content
       Dropdown(visible=!!contextMenu onClose=() => setContextMenu(false) pos=contextMenu)
-        DropdownItem.link-danger(onClick=() => setModal(contextMenu.i)) Delete
+        DropdownItem.link-danger(onClick=() => setModal(contextMenu.i)) Delete Note
       if modal !== false
         ModalConfirm(
           title='Delete Note'
