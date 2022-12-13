@@ -119,9 +119,37 @@ function App() {
   // Register hotkeys...
   React.useEffect(() => registerHotkeys(context), [notebook, note])
 
+
   return pug`
     NotesProvider(value=context)
-      .window-content.col
+      .window-content.col(
+        onDrop=${e => {
+          for (const file of e.dataTransfer.files) {
+            const path = file.path
+            if (path && fs.existsSync(path)) {
+              if (fs.lstatSync(path).isDirectory) {
+                // Add folder as notebook
+                addNotebook(path)
+              } else if (path.endsWith('.md')) {
+                // Copy markdown files to notebook if they don't already exist
+                const basename = Path.basename(path)
+                if (!fs.existsSync(Path.join(notebook.path, basename))) {
+                  fs.copyFileSync(path, Path.join(notebook.path, basename))
+                  notebooks[notebookIdx] = Notebook.fromFile(notebook.path)
+
+                  forceUpdate()
+
+                  // Select the note
+                  const index = notebooks[notebookIdx].notes.findIndex(n => Path.basename(n.path) === basename)
+                  if (index !== -1)
+                    setNote(index)
+                }
+              }
+            }
+          }
+        }}
+        onDragOver=e => e.preventDefault()
+      )
         Toolbar
         TabBar(
           tabs=tabs setTabs=setTabs
