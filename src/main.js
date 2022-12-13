@@ -35,6 +35,17 @@ const createWindow = () => {
     return canceled ? null : (filePaths.length > 1 ? filePaths : filePaths[0])
   })
 
+  ipcMain.handle('find', (e, text, options) => {
+    if (!text) {
+      return mainWindow.webContents.stopFindInPage(typeof(options) === 'string' ? options : 'clearSelection')
+    }
+    return mainWindow.webContents.findInPage(text, options)
+  })
+
+  mainWindow.webContents.on('found-in-page', (e, result) => {
+    mainWindow.webContents.send('found-in-page', result)
+  })
+
   // TEMP: While there's no dark mode
   nativeTheme.themeSource = 'light'
 

@@ -199,3 +199,9 @@ font[face=monospace] {
 #note-body {
   max-width: 960px;
 }
+
+.center-content {
+  display: grid;
+  justify-content: center;
+  align-content: center;
+}

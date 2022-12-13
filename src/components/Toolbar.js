@@ -2,6 +2,7 @@ import React, { useContext } from 'react'
 import WindowControls from './WindowControls'
 import bootstrap from '../dist/bootstrap/js/bootstrap.bundle.min.js'
 import { NotesContext } from '../views/App'
+import Search from './Search'
 
 function EditBar() {
   function FormatButton({command, param=null, ...props}) {
@@ -36,14 +37,7 @@ function EditBar() {
         FormatButton(icon='type-h1' command='formatBlock' param='h1')
         FormatButton(icon='type-h2' command='formatBlock' param='h2')
         FormatButton(icon='type-h3' command='formatBlock' param='h3')
-      .dropdown.ms-auto.me-1
-        a.btn.btn-default(data-bs-toggle='dropdown')
-          i.icon.icon-search
-        div.dropdown-menu.dropdown-menu-end.p-2(style={minWidth: 300})
-          .dropdown-arrow
-          .input-group
-            input.fill.form-control.form-control-sm(type='text' placeholder='Search')
-            button.btn.btn-default(style={height: 'unset'}) Search
+      Search
   `
 }
 

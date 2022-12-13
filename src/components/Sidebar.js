@@ -112,7 +112,7 @@ export function Sidebar({notes=[], active}) {
             else
               h6.text-muted Untitled
             p(style={maxHeight: '1.5em'})
-              HTML= note.content
+              HTML= note.content.slice(0, 100)
       Dropdown(visible=!!contextMenu onClose=() => setContextMenu(false) pos=contextMenu)
         DropdownItem.link-danger(onClick=() => setModal(contextMenu.i)) Delete Note
       if modal !== false
