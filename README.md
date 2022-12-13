@@ -17,6 +17,27 @@ yarn start
 
 Notebooks are stored as subfolders of the `notes` folder in the pwd.
 
+## Features
+
+Implemented
+- Organize markdown notes in notebooks linked to folders
+- Apply all the core types of markdown formatting
+- Paste images directly from your clipboard
+- Search note contents for keywords or phrases
+- Code blocks with syntax highlighting
+- LaTeX math rendering
+- Open multiple tabs
+
+Planned
+- Dark Mode - wip on `dark-theme` branch
+- Note Categories
+- Sticky Notes view
+- Tables
+- Autosave
+- Notebook icons
+- Encrypted notebooks
+- Sorting notes
+
 ## Libraries Used
 
 Detailed info is in `package.json`. Yarn will install all needed dependencies for you.
